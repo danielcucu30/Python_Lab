@@ -1,6 +1,5 @@
 from __future__ import print_function, unicode_literals
  
-my_str = 'whatever'
 my_str2 = "someting else"
 
 my_str3 =  ''' THIS
