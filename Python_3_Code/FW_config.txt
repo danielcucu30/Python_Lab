@@ -1,0 +1,2664 @@
+: Saved
+: 
+: Serial Number: FCH1721J1W8
+: Hardware:   ASA5512, 4096 MB RAM, CPU Clarkdale 2792 MHz, 1 CPU (2 cores)
+:
+ASA Version 9.8(2)28 
+!
+hostname FW-EU01-PUB-3
+domain-name global.root
+enable password NZnbJ4Y/iEgDrNw6 encrypted
+xlate per-session deny tcp any4 any4
+xlate per-session deny tcp any4 any6
+xlate per-session deny tcp any6 any4
+xlate per-session deny tcp any6 any6
+xlate per-session deny udp any4 any4 eq domain
+xlate per-session deny udp any4 any6 eq domain
+xlate per-session deny udp any6 any4 eq domain
+xlate per-session deny udp any6 any6 eq domain
+passwd 2KFQnbNIdI.2KYOU encrypted
+names
+ip local pool vpn-client-pool 10.121.240.1-10.121.240.254 mask 255.255.255.0
+ip local pool vpn-client-pool-2 10.121.239.1-10.121.239.254 mask 255.255.255.0
+ip local pool Events-IP-Pool 10.121.238.1-10.121.238.254 mask 255.255.255.0
+ip local pool vpn-client-pool-SD-Recovery 10.121.246.1-10.121.246.254 mask 255.255.255.0
+!
+interface GigabitEthernet0/0
+ description INSIDE - Tranzit
+ nameif tranzdmz1
+ security-level 100
+ ip address 10.121.241.6 255.255.255.0 
+!
+interface GigabitEthernet0/1
+ description OUTSIDE - Public
+ nameif outside
+ security-level 0
+ ip address 213.174.212.154 255.255.255.224 
+!
+interface GigabitEthernet0/2
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface GigabitEthernet0/3
+ description NotInUse
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface GigabitEthernet0/4
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface GigabitEthernet0/5
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Management0/0
+ management-only
+ nameif management
+ security-level 0
+ no ip address
+!
+banner login //////////////////////////////////////////////////
+banner login STOP - ARE YOU AUTHORISED
+banner login 
+banner login 
+banner login Access to this service and all other technology resources belonging to
+banner login Euromoney Institutional Investor plc (the company) is restricted to its
+banner login authorised employees, contractors and partners. Access to company
+banner login resources is logged and monitored. The company's Acceptable Use Policy
+banner login (AUP) which is available on the Hub advises all authorised individuals
+banner login what use is permitted. Unauthorised access is prohibited and the Company
+banner login reserves the right to take legal action against offenders. To report
+banner login difficulties with this service or to request further clarification
+banner login regarding the AUP, please contact your local Service Desk:
+banner login 
+banner login UK: itservicedesk@euromoneyplc.com +44 (0) 20 7779 8444
+banner login ///////////////////////////////////////////////////
+banner asdm //////////////////////////////////////////////////
+banner asdm STOP - ARE YOU AUTHORISED
+banner asdm 
+banner asdm 
+banner asdm Access to this service and all other technology resources belonging to
+banner asdm Euromoney Institutional Investor plc (the company) is restricted to its
+banner asdm authorised employees, contractors and partners. Access to company
+banner asdm resources is logged and monitored. The company's Acceptable Use Policy
+banner asdm (AUP) which is available on the Hub advises all authorised individuals
+banner asdm what use is permitted. Unauthorised access is prohibited and the Company
+banner asdm reserves the right to take legal action against offenders. To report
+banner asdm difficulties with this service or to request further clarification
+banner asdm regarding the AUP, please contact your local Service Desk:
+banner asdm 
+banner asdm UK: itservicedesk@euromoneyplc.com +44 (0) 20 7779 8444
+banner asdm ///////////////////////////////////////////////////
+boot system disk0:/asa984-15-smp-k8.bin
+boot system disk0:/asa982-28-smp-k8.bin
+ftp mode passive
+clock timezone GMT/BST 0
+clock summer-time GMT/BDT recurring last Sun Mar 1:00 last Sun Oct 2:00
+dns domain-lookup tranzdmz1
+dns domain-lookup outside
+dns domain-lookup management
+dns server-group DefaultDNS
+ name-server 10.121.10.12 
+ name-server 10.121.10.13 
+ name-server 10.122.10.12 
+ domain-name global.root
+object network AM01_Network_10.122.0.0m16
+ subnet 10.122.0.0 255.255.0.0
+object network AM04_DR_Network_10.105.4.0m22
+ subnet 10.105.4.0 255.255.255.0
+object network AM04_Network_10.104.0.0m22
+ subnet 10.104.0.0 255.255.252.0
+object network AM04_Network_10.104.17.0m24
+ subnet 10.104.17.0 255.255.255.0
+object network AP01_Network_192.168.133.0m24
+ subnet 192.168.133.0 255.255.255.0
+object network AP01_Network_192.168.80.0m24
+ subnet 192.168.80.0 255.255.255.0
+object network AP03_Network_10.175.1.0m24
+ subnet 10.175.1.0 255.255.255.0
+object network EU01_Network_10.121.0.0m16
+ subnet 10.121.0.0 255.255.0.0
+object network EU01_Network_10.21.0.0m22
+ subnet 10.21.0.0 255.255.252.0
+object network EU03_Network_10.242.6.0m24
+ subnet 10.242.6.0 255.255.255.0
+object network EU03_Network_10.242.7.0m24
+ subnet 10.242.7.0 255.255.255.0
+object network EU03_Network_10.242.9.0m24
+ subnet 10.242.9.0 255.255.255.0
+object network EU04_Network_10.242.1.0m24
+ subnet 10.242.1.0 255.255.255.0
+object network EU04_Network_10.242.4.0m27
+ subnet 10.242.4.0 255.255.255.224
+object network EU04_Network_192.168.254.0m24
+ subnet 192.168.254.0 255.255.255.0
+object network EU05_Network_10.242.10.0m24
+ subnet 10.242.10.0 255.255.255.0
+object network EU07_Network_10.17.0.0m16
+ subnet 10.17.0.0 255.255.0.0
+object network RFC-Network-10
+ subnet 10.0.0.0 255.0.0.0
+object network RFC-Network-172
+ subnet 172.16.0.0 255.240.0.0
+object network RFC-Network-192
+ subnet 192.168.0.0 255.255.0.0
+object network EU01-VPN-POOL_10.121.240.0m24
+ subnet 10.121.240.0 255.255.255.0
+object network test1-cacti
+ host 10.1.7.96
+object network test2-splarwids
+ host 10.1.3.54
+object network PUBLIC-External
+ host 213.174.212.158
+object network Websense-1-Public
+ host 213.174.212.137
+object network Websense-2-Public
+ host 213.174.212.138
+object network UK01-NMS02
+ host 10.1.3.54
+object network EU01-VPN-POOL_10.121.239.0m24
+ subnet 10.121.239.0 255.255.255.0
+object service RTMP
+ service tcp destination eq 1935 
+ description Real Time Messaging Protocol
+object service tcp-5223
+ service tcp destination eq 5223 
+ description Apple policy push
+object network EU01-VPN-POOL_10.121.238.0m24
+ subnet 10.121.238.0 255.255.255.0
+object network NETWORK_OBJ_10.121.238.0_24
+ subnet 10.121.238.0 255.255.255.0
+object network EU01PTSESMGR-VIP
+ host 10.121.160.21
+object network EU01PTSESMGR01
+ host 10.121.160.13
+object network EU01PTSESMGR02
+ host 10.121.160.14
+object network EU08PTSESMGR-VIP
+ host 10.68.116.16
+object network EU08PTSESMGR01
+ host 10.68.116.12
+object network AvayaG450-A
+ host 10.121.160.19
+object network AvayaG450-B
+ host 10.68.116.14
+object network EU01PADC01
+ host 10.121.10.11
+object network EU01PADC02
+ host 10.121.10.12
+object network EU01PADC03
+ host 10.121.10.13
+object network EU01TNAV04
+ host 10.121.45.75
+ description CHG0033506
+object service TCP8080
+ service tcp destination eq 8080 
+object network mytoken.global.root
+ host 10.121.11.36
+object network EMH_AM01PICA01_10.122.11.211
+ host 10.122.11.211
+object network EMH_EU01PICA01_10.121.11.211
+ host 10.121.11.211
+object network AM02PMACMGMT01
+ host 172.16.2.131
+object network EU08PMACMGMT01
+ host 10.68.160.20
+object network Azure_Prod_Network_10.201.32.0m24
+ subnet 10.201.32.0 255.255.255.0
+object network Azure_UAT_Network_10.201.0.0m24
+ subnet 10.201.0.0 255.255.255.0
+object network EU01PCIFS01
+ host 10.121.19.11
+object network Azure_Prod_Network_10.201.32.0m19
+ subnet 10.201.32.0 255.255.224.0
+object network Azure_UAT_Network_10.201.0.0m19
+ subnet 10.201.0.0 255.255.224.0
+object network EU01TBFC02
+ host 10.121.225.14
+object service TCP-RDP
+ service tcp destination eq 3389 
+object network EU01PSTASH01_10.121.54.17
+ host 10.121.54.17
+object network AWS_FM_10.99.0.0m24
+ subnet 10.99.0.0 255.255.255.0
+object network AWS_FM_10.99.2.0m24
+ subnet 10.99.2.0 255.255.255.0
+object network AWS_FM_10.99.101.0m24
+ subnet 10.99.101.0 255.255.255.0
+object network Azure_Shared_Network_10.201.224.0m19
+ subnet 10.201.224.0 255.255.224.0
+object network EMDREDEN01_10.68.160.15
+ host 10.68.160.15
+object network EMCLEDEN01_10.1.8.200
+ host 10.1.8.200
+object network sts.euromoneyplc.com
+ host 10.121.10.35
+object network EMCLEDENDEV01_10.1.8.201
+ host 10.1.8.201
+object network EMCLEDENRM01_10.1.8.204
+ host 10.1.8.204
+object network EMDREDENRM01_10.68.160.115
+ host 10.68.160.115
+object network Azure_Network_10.212.0.48m28
+ subnet 10.212.0.48 255.255.255.240
+object network EU01TFINWEB01
+ host 10.121.45.50
+object network EU01SFINWEB01
+ host 10.121.45.42
+object network stash-test.euromoneydigital.com
+ host 10.121.45.76
+object network stash.euromoneydigital.com
+ host 10.121.54.17
+object network EU01TJIRA01
+ host 10.121.233.62
+object network EU01POCTOPUS01
+ host 10.121.53.32
+object network EU01-ZABBIX-01
+ host 10.121.234.88
+object network AWS_FastMarkets_10.99.1.0m24
+ subnet 10.99.1.0 255.255.255.0
+object network AWS_FastMarkets_10.99.102.0m24
+ subnet 10.99.102.0 255.255.255.0
+object network AWS_FastMarkets_10.99.103.0m24
+ subnet 10.99.103.0 255.255.255.0
+object network fisheye.euromoneydigital.com
+ host 10.121.233.61
+object network EU10_Enfield_LAN_172.29.33.0m24
+ subnet 172.29.33.0 255.255.255.0
+object service tcp-3389
+ service tcp destination eq 3389 
+object network jira.euromoneydigital.com
+ host 10.121.233.61
+object network EU01_Network_10.121.234.0m24
+ subnet 10.121.234.0 255.255.255.0
+ description EU01 Delphi Dev
+object network EU01-Metals
+ subnet 10.121.226.0 255.255.255.0
+ description CHG0038569
+object network EU01PDTR01
+ host 10.121.54.15
+object network Azure_Metals_Network_10.201.128.0m19
+ subnet 10.201.128.0 255.255.224.0
+object network Azure_Fastmarkets_Network
+ subnet 10.204.0.0 255.255.224.0
+ description CHG0038611
+object network AM01SSQLC01
+ host 10.122.45.120
+object service LDAP-GC
+ service tcp destination range 3268 3269 
+object service Active_Directory_Domain_Services
+ service tcp destination range 49152 65535 
+object service Kerberos_88_TCP
+ service tcp destination eq 88 
+object service Kerberos_88_UDP
+ service udp destination eq 88 
+object service RPC_135_TCP
+ service tcp destination eq 135 
+object service SMB_445_TCP
+ service tcp destination eq 445 
+object service SMB_445_UDP
+ service udp destination eq 445 
+object network AZ01-DC-01
+ host 10.201.32.10
+object network AZ02-DC-01
+ host 10.201.0.10
+object network EU01-DC-AZ-01
+ host 10.121.223.11
+object network FILES.EMAZURE.INTERNAL
+ host 10.201.226.101
+object service tcp-7999-stash
+ service tcp destination eq 7999 
+object network EU01-NUGET-01
+ host 10.122.53.200
+object network AP01_HK_192.168.100.0_24
+ subnet 192.168.100.0 255.255.255.0
+object network EU08_10.68.160.0_24
+ subnet 10.68.160.0 255.255.255.0
+object network AM03_10.80.160.0_24
+ subnet 10.80.160.0 255.255.255.0
+object network AM01PCMSTE01
+ host 10.122.53.30
+object network AM01TCMSTE01
+ host 10.122.45.33
+object network Intermapper_10.1.3.48
+ host 10.1.3.48
+object network UK01-MCF-01_10.1.7.133
+ host 10.1.7.133
+object network BCA-Canada_10.10.40.0m24
+ subnet 10.10.40.0 255.255.255.0
+object network WLC-Master
+ host 10.0.1.50
+object network eu01pinftools_10_121_11_250
+ host 10.121.11.250
+object network EMAzureDR_10.215.32.0
+ subnet 10.215.32.0 255.255.224.0
+object network AM01PADFS301
+ host 10.122.10.19
+object network prod-vitrium-auth.euromoneydigital.com
+ host 45.60.13.165
+object network prod-vitrium-api.euromoneydigital.com
+ host 168.63.52.85
+object network EU01PDTR02
+ host 10.121.54.16
+object network AZ01-45.60.13.165
+ host 45.60.13.165
+object network Waterloo-192.168.8.0m24
+ subnet 192.168.8.0 255.255.255.0
+ description Boardex-waterloo
+object network Waterloo-10.20.0.0m16
+ subnet 10.20.0.0 255.255.0.0
+ description Boardex-waterloo
+object network Chennai-10.30.0.0m16
+ subnet 10.30.0.0 255.255.0.0
+ description Boardex-Chennai-Users
+object network AWS-10.200.0.0m16
+ subnet 10.200.0.0 255.255.0.0
+ description Boardex-AWS
+object network AWS_TheDeal-10.100.64.0m19
+ subnet 10.100.64.0 255.255.224.0
+ description EM-TheDeal-PROD AWS
+object network Wisconsin10.40.10.0m24
+ subnet 10.40.10.0 255.255.255.0
+ description EM-Wisconsin
+object network AWS_BoardexPROD-10.100.0.0m19
+ subnet 10.100.0.0 255.255.224.0
+ description EM-Boardex PROD AWS
+object network EU07_10.17.10.0m24
+ subnet 10.17.10.0 255.255.255.0
+ description Boardex-Ludgate
+object network LONDC03-192.168.8.22
+ host 192.168.8.22
+object network BoardEX_SW_Test
+ subnet 172.16.2.0 255.255.255.0
+object network Chennai_192_168_5_0m24
+ subnet 192.168.5.0 255.255.255.0
+ description Chennai-Server-Net
+object network TST-NY
+ subnet 172.16.2.0 255.255.255.0
+object network AWS_TST_192_168_64_0m19
+ subnet 192.168.64.0 255.255.224.0
+object network BoardEX_10_68_160_69
+ host 10.68.160.69
+object network AM03_Bordex_10.80.212.0m24
+ subnet 10.80.212.0 255.255.255.0
+object network EU01_Session_manager_10.121_160_21
+ subnet 10.121.160.0 255.255.255.0
+object network Eu08_Session_Manager_10.68.116.16
+ host 10.68.116.16
+object service TCP2021-dyntrace
+ service tcp destination eq 2021 
+object network EU01-Voice_Net
+ subnet 10.121.160.0 255.255.255.0
+object network AM01-VPN_Pool_Boardex10_122_237_0m24
+ subnet 10.122.237.0 255.255.255.0
+object network BoardEX_Eu01phr01
+ host 10.121.53.27
+object network si-dat_euromoneydigital_com
+ host 52.169.88.247
+object network staging-si-dat.euromoneydigital.com
+ host 13.79.165.188
+object service TCP-8443
+ service tcp destination eq 8443 
+object network test-si-dat.ci02.global.root
+ host 10.121.234.8
+object network Azure_Network-10.201.43.0
+ subnet 10.201.43.0 255.255.255.0
+object network Incapsula_199.83.128.0
+ subnet 199.83.128.0 255.255.248.0
+object network Incapsula_198.43.32.0
+ subnet 198.143.32.0 255.255.224.0
+object network Incapsula_149.126.72.0
+ subnet 149.126.72.0 255.255.248.0
+object network Incapsula_103.28.248.0
+ subnet 103.28.248.0 255.255.252.0
+object network Incapsula_45.64.64.0
+ subnet 45.64.64.0 255.255.252.0
+object network incapsula_185.11.124.0
+ subnet 185.11.124.0 255.255.252.0
+object network incapsula_192.230.64.0
+ subnet 192.230.64.0 255.255.192.0
+object network incapsula_45.60.0.0
+ subnet 45.60.0.0 255.255.0.0
+object network Incapsula_45.233.0.0
+ subnet 45.223.0.0 255.255.0.0
+object network Incapsula_45.223.0.0
+ subnet 107.154.0.0 255.255.0.0
+object network EU01-VPN-POOL_Recovery_10.121.246.0m24
+ subnet 10.121.246.0 255.255.255.0
+object network am01psmtp01_10_122_10_31
+ host 10.123.10.31
+object network eu01pjamf01_10.121.11.132
+ host 10.121.11.132
+object network EMH_EU01PADC02_10_121_10_12
+ host 10.121.10.12
+object network EMH_EU01PADC03_10_121_10_13
+ host 10.121.10.13
+object network EMH_EU01PADC01_10_121_10_11
+ host 10.121.10.11
+object network EHM_AM01PADC01_10_122_10_11
+ host 10.122.10.11
+object network EMH_AM01PADC02_10_122_10_12
+ host 10.122.10.12
+object network EMH_AM01PADC03_10_122_10_13
+ host 10.122.10.13
+object service Tcp-137
+ service tcp destination eq 137 
+object service UDP-137
+ service udp destination eq netbios-ns 
+object service TCP-139
+ service tcp destination eq netbios-ssn 
+object service UDP-138
+ service udp destination eq netbios-dgm 
+object service UDP-464
+ service udp destination eq 464 
+object network Dev01_172_20_11_50
+ host 172.20.11.50
+object network Dev02_172_20_11_32
+ host 172.20.11.32
+object network web-staging_10_209_10_21
+ host 10.209.10.21
+object service MySql
+ service tcp destination eq 3306 
+ description MySQL for DB access
+object service ElasticSearch
+ service tcp destination eq 9200 
+ description MySQL for DB access
+object network EU01PADFS301
+ host 10.121.10.33
+object network EU01PSMTP01
+ host 10.121.10.31
+object service Kerberos_464_UDP
+ service udp destination eq 464 
+object service Kerberos_464_TCP
+ service tcp destination eq 464 
+object service GP_UDP_138_UDP
+ service udp destination eq netbios-dgm 
+object service TCP-LDAP-GC
+ service tcp destination range 3268 3269 
+object service ntp
+ service tcp destination eq 123 
+object service udp-ldap
+ service udp destination eq 389 
+object network staging_isis_euromoneydigital_com
+ host 40.69.32.164
+ description BCA Staging
+object network staging_bcaresearch
+ host 13.79.166.19
+ description BCA Staging
+object network EU01POCTOPUS02
+ host 10.121.45.225
+ description EU01POCTOPUS02
+object network Eden-Test_10.215.33.4
+ host 10.215.33.4
+object network EU01PFINCCRS01
+ host 10.121.53.53
+object network EU01SFINCCRS01
+ host 10.121.45.71
+object network 10.201.132.0ms24
+ subnet 10.201.132.0 255.255.255.0
+object service TCP-3306-MySQL
+ service tcp destination eq 3305 
+object service TCP-5900
+ service tcp destination eq 5900 
+object network BCA-Web-SQL_10.209.10.14
+ host 10.209.10.14
+object network Azure_Network_10.212.192.0m19
+ subnet 10.212.192.0 255.255.224.0
+object network Azure_Network_10.211.224.0m19
+ subnet 10.211.224.0 255.255.224.0
+object network staging.bcaresearch.com
+ host 10.209.10.21
+object network cms.ndr.com
+ host 10.104.33.134
+object network qacms.ndr.com
+ host 10.104.49.151
+object network EU01PFINWEB01
+ host 10.121.53.47
+object-group icmp-type ICMP_EchoGroup
+ description ICMP_EchoGroup
+ icmp-object echo
+ icmp-object echo-reply
+ icmp-object traceroute
+ icmp-object unreachable
+ icmp-object time-exceeded
+object-group protocol TCPUDP
+ protocol-object udp
+ protocol-object tcp
+object-group network DM_INLINE_NETWORK_1
+ network-object object test1-cacti
+ network-object object test2-splarwids
+object-group network DenyVPN
+ network-object object PUBLIC-External
+ network-object object Websense-1-Public
+ network-object object Websense-2-Public
+object-group service UsersServices
+ service-object icmp 
+ service-object object RTMP 
+ service-object object tcp-5223 
+ service-object tcp destination eq ftp 
+ service-object tcp destination eq www 
+ service-object tcp destination eq https 
+ service-object tcp destination eq ssh 
+object-group network DM_INLINE_NETWORK_2
+ network-object object AvayaG450-A
+ network-object object EU01PTSESMGR-VIP
+ network-object object EU08PTSESMGR-VIP
+ network-object object AvayaG450-B
+object-group network DM_INLINE_NETWORK_3
+ network-object object EU01PADC02
+ network-object object EU01PADC03
+object-group network DM_INLINE_NETWORK_4
+ network-object object EMH_AM01PICA01_10.122.11.211
+ network-object object EMH_EU01PICA01_10.121.11.211
+object-group network DM_INLINE_NETWORK_5
+ network-object object AM02PMACMGMT01
+ network-object object EU08PMACMGMT01
+object-group network DM_INLINE_NETWORK_6
+ network-object object EU01PADC02
+ network-object object EU01PADC03
+object-group service DM_INLINE_TCP_1 tcp
+ port-object eq www
+ port-object eq https
+ port-object eq ssh
+object-group service DM_INLINE_TCP_2 tcp
+ port-object eq www
+ port-object eq https
+ port-object eq ssh
+object-group service DM_INLINE_TCP_3 tcp
+ port-object eq www
+ port-object eq https
+ port-object eq ssh
+object-group network DM_INLINE_NETWORK_7
+ network-object object EU01PADC02
+ network-object object EU01PADC03
+object-group network DM_INLINE_NETWORK_8
+ network-object object AWS_FM_10.99.0.0m24
+ network-object object AWS_FM_10.99.101.0m24
+ network-object object AWS_FM_10.99.2.0m24
+object-group network DM_INLINE_NETWORK_10
+ network-object object EMCLEDEN01_10.1.8.200
+ network-object object EMDREDEN01_10.68.160.15
+ network-object object EU01PSTASH01_10.121.54.17
+ network-object object EMCLEDENDEV01_10.1.8.201
+ network-object object EMCLEDENRM01_10.1.8.204
+ network-object object Eden-Test_10.215.33.4
+object-group network DM_INLINE_NETWORK_9
+ network-object object EU01PADC02
+ network-object object EU01PADC03
+object-group service DM_INLINE_TCP_4 tcp
+ port-object eq www
+ port-object eq https
+object-group service DM_INLINE_TCP_5 tcp
+ port-object eq www
+ port-object eq https
+ port-object eq ssh
+object-group service DM_INLINE_SERVICE_1
+ service-object tcp destination eq www 
+ service-object tcp destination eq https 
+ service-object tcp destination eq netbios-ssn 
+ service-object tcp destination eq sqlnet 
+ service-object tcp destination eq ssh 
+ service-object udp destination eq netbios-dgm 
+ service-object udp destination eq netbios-ns 
+object-group network DM_INLINE_NETWORK_26
+ network-object object AM01PADFS301
+ network-object object sts.euromoneyplc.com
+object-group network Incapsula
+ network-object object Incapsula_103.28.248.0
+ network-object object Incapsula_149.126.72.0
+ network-object object Incapsula_198.43.32.0
+ network-object object Incapsula_199.83.128.0
+ network-object object Incapsula_45.223.0.0
+ network-object object Incapsula_45.233.0.0
+ network-object object Incapsula_45.64.64.0
+ network-object object incapsula_185.11.124.0
+ network-object object incapsula_192.230.64.0
+ network-object object incapsula_45.60.0.0
+object-group network DM_INLINE_NETWORK_11
+ network-object object Azure_Network_10.212.0.48m28
+ network-object object Azure_Prod_Network_10.201.32.0m19
+ network-object object Azure_UAT_Network_10.201.0.0m19
+ network-object 10.208.32.0 255.255.224.0
+ network-object object Azure_Metals_Network_10.201.128.0m19
+object-group network DM_INLINE_NETWORK_12
+ network-object object Azure_Prod_Network_10.201.32.0m19
+ network-object object Azure_Shared_Network_10.201.224.0m19
+ network-object object Azure_UAT_Network_10.201.0.0m19
+ network-object object AM04_Network_10.104.0.0m22
+ network-object object cms.ndr.com
+ network-object object qacms.ndr.com
+object-group network DM_INLINE_NETWORK_30
+ network-object object RFC-Network-10
+ network-object object RFC-Network-172
+ network-object object RFC-Network-192
+object-group network DM_INLINE_NETWORK_13
+ network-object object EU01SFINWEB01
+ network-object object EU01TFINWEB01
+ network-object object EU01PFINCCRS01
+ network-object object EU01SFINCCRS01
+ network-object object EU01PFINWEB01
+object-group service DM_INLINE_TCP_8 tcp
+ port-object eq www
+ port-object eq https
+object-group network DM_INLINE_NETWORK_34
+ network-object object prod-vitrium-api.euromoneydigital.com
+ network-object object prod-vitrium-auth.euromoneydigital.com
+object-group network DM_INLINE_NETWORK_14
+ network-object object stash-test.euromoneydigital.com
+ network-object object stash.euromoneydigital.com
+object-group network DM_INLINE_NETWORK_15
+ network-object object AZ01-DC-01
+ network-object object AZ02-DC-01
+ network-object object EU01-DC-AZ-01
+object-group service DM_INLINE_TCP_10 tcp
+ port-object eq https
+ port-object eq ssh
+object-group network DM_INLINE_NETWORK_16
+ network-object object EU01POCTOPUS01
+ network-object object EU01TJIRA01
+object-group network DM_INLINE_NETWORK_17
+ network-object object stash-test.euromoneydigital.com
+ network-object object stash.euromoneydigital.com
+object-group network DM_INLINE_NETWORK_18
+ network-object object AWS_FM_10.99.0.0m24
+ network-object object AWS_FM_10.99.101.0m24
+ network-object object AWS_FastMarkets_10.99.1.0m24
+ network-object object AWS_FastMarkets_10.99.102.0m24
+ network-object object AWS_FastMarkets_10.99.103.0m24
+object-group service DM_INLINE_SERVICE_3
+ service-object object TCP-RDP 
+ service-object tcp destination eq www 
+ service-object tcp destination eq https 
+ service-object tcp destination eq ssh 
+ service-object tcp destination eq 1433 
+object-group service DM_INLINE_SERVICE_4
+ service-object object TCP-RDP 
+ service-object tcp destination eq www 
+ service-object tcp destination eq https 
+ service-object tcp destination eq ssh 
+object-group service DM_INLINE_SERVICE_5
+ service-object object TCP-RDP 
+ service-object tcp destination eq www 
+ service-object tcp destination eq https 
+ service-object tcp destination eq ssh 
+ service-object tcp destination eq 1433 
+object-group service Active-Directory-Services
+ service-object object Active_Directory_Domain_Services 
+ service-object object Kerberos_88_TCP 
+ service-object object Kerberos_88_UDP 
+ service-object object RPC_135_TCP 
+ service-object object SMB_445_TCP 
+ service-object object SMB_445_UDP 
+ service-object tcp destination eq domain 
+ service-object tcp destination eq ldap 
+ service-object tcp destination eq ldaps 
+ service-object udp destination eq domain 
+ service-object udp destination eq ntp 
+ service-object object LDAP-GC 
+ service-object tcp destination eq 464 
+ service-object udp destination eq 464 
+ service-object tcp destination eq 5722 
+object-group service DM_INLINE_TCP_11 tcp
+ port-object eq https
+ port-object eq ssh
+object-group network DM_INLINE_NETWORK_19
+ network-object object RFC-Network-10
+ network-object object RFC-Network-172
+ network-object object RFC-Network-192
+object-group network DM_INLINE_NETWORK_20
+ network-object object RFC-Network-10
+ network-object object RFC-Network-172
+ network-object object RFC-Network-192
+object-group service DM_INLINE_TCP_12 tcp
+ port-object eq www
+ port-object eq https
+object-group service DM_INLINE_TCP_13 tcp
+ port-object eq www
+ port-object eq https
+object-group network DM_INLINE_NETWORK_21
+ network-object object EU01PADC02
+ network-object object EU01PADC03
+object-group network DM_INLINE_NETWORK_22
+ network-object object EU01PADC02
+ network-object object EU01PADC03
+object-group service DM_INLINE_TCP_19 tcp
+ port-object eq www
+ port-object eq https
+object-group network DM_INLINE_NETWORK_23
+ network-object object EU01PADC02
+ network-object object EU01PADC03
+ network-object object EU01PADC01
+object-group network DM_INLINE_NETWORK_24
+ network-object object RFC-Network-10
+ network-object object RFC-Network-172
+ network-object object RFC-Network-192
+object-group network DM_INLINE_NETWORK_25
+ network-object object AWS_FM_10.99.0.0m24
+ network-object object AWS_FM_10.99.101.0m24
+ network-object object AWS_FM_10.99.2.0m24
+object-group service DM_INLINE_TCP_14 tcp
+ port-object eq www
+ port-object eq https
+object-group service DM_INLINE_TCP_15 tcp
+ port-object eq www
+ port-object eq https
+ port-object eq ssh
+object-group network DM_INLINE_NETWORK_27
+ network-object host 10.121.226.10
+ network-object host 10.121.226.11
+ network-object object sts.euromoneyplc.com
+object-group network DM_INLINE_NETWORK_35
+ network-object object prod-vitrium-api.euromoneydigital.com
+ network-object object prod-vitrium-auth.euromoneydigital.com
+object-group network DM_INLINE_NETWORK_28
+ network-object object stash-test.euromoneydigital.com
+ network-object object stash.euromoneydigital.com
+object-group service DM_INLINE_TCP_16 tcp
+ port-object eq https
+ port-object eq ssh
+object-group network DM_INLINE_NETWORK_48
+ network-object object jira.euromoneydigital.com
+ network-object object stash.euromoneydigital.com
+ network-object object stash-test.euromoneydigital.com
+object-group service DM_INLINE_TCP_18 tcp
+ port-object eq www
+ port-object eq https
+object-group service DM_INLINE_TCP_20 tcp
+ port-object eq www
+ port-object eq https
+object-group network DM_INLINE_NETWORK_29
+ network-object object Azure_Prod_Network_10.201.32.0m19
+ network-object object Azure_Shared_Network_10.201.224.0m19
+ network-object object Azure_UAT_Network_10.201.0.0m19
+object-group service DM_INLINE_TCP_21 tcp
+ port-object eq www
+ port-object eq https
+object-group service DM_INLINE_SERVICE_6
+ service-object object tcp-7999-stash 
+ service-object tcp destination eq www 
+ service-object tcp destination eq https 
+ service-object tcp destination eq ssh 
+object-group service DM_INLINE_TCP_22 tcp
+ port-object eq www
+ port-object eq https
+object-group network DM_INLINE_NETWORK_31
+ network-object object RFC-Network-10
+ network-object object RFC-Network-172
+ network-object object RFC-Network-192
+object-group service DM_INLINE_TCP_23 tcp
+ port-object eq www
+ port-object eq https
+object-group network DM_INLINE_NETWORK_32
+ network-object object RFC-Network-10
+ network-object object RFC-Network-172
+ network-object object RFC-Network-192
+object-group service DM_INLINE_TCP_24 tcp
+ port-object eq www
+ port-object eq https
+object-group network DM_INLINE_NETWORK_33
+ network-object object AM01_Network_10.122.0.0m16
+ network-object object AP01_HK_192.168.100.0_24
+ network-object object EU01_Network_10.121.0.0m16
+ network-object object AM03_10.80.160.0_24
+ network-object object EU08_10.68.160.0_24
+ network-object object RFC-Network-192
+ network-object object Intermapper_10.1.3.48
+ network-object object UK01-MCF-01_10.1.7.133
+ network-object object BCA-Canada_10.10.40.0m24
+ network-object 10.201.0.0 255.255.224.0
+ network-object 10.208.32.0 255.255.224.0
+ network-object object Azure_Prod_Network_10.201.32.0m19
+object-group network DM_INLINE_NETWORK_36
+ network-object object EU01PDTR01
+ network-object object EU01PDTR02
+object-group service DM_INLINE_TCP_6 tcp
+ port-object eq https
+ port-object eq ssh
+object-group service DM_INLINE_TCP_9 tcp
+ port-object eq www
+ port-object eq https
+object-group network DM_INLINE_NETWORK_37
+ network-object object EU01PADC01
+ network-object object EU01PADC02
+object-group network BoardEX_NETS
+ network-object object Waterloo-192.168.8.0m24
+ network-object object TST-NY
+ network-object object Waterloo-10.20.0.0m16
+ network-object object Wisconsin10.40.10.0m24
+ network-object object AWS-10.200.0.0m16
+ network-object object AWS_BoardexPROD-10.100.0.0m19
+ network-object object AWS_TST_192_168_64_0m19
+ network-object object AWS_TheDeal-10.100.64.0m19
+ network-object object BoardEX_SW_Test
+ network-object object Chennai-10.30.0.0m16
+ network-object object Chennai_192_168_5_0m24
+ network-object object EU07_10.17.10.0m24
+ network-object object LONDC03-192.168.8.22
+ network-object object AM03_Bordex_10.80.212.0m24
+object-group service DM_INLINE_SERVICE_2
+ service-object tcp destination eq domain 
+ service-object udp destination eq domain 
+object-group network DM_INLINE_NETWORK_39
+ network-object object EU01PDTR01
+ network-object object EU01PDTR02
+object-group service DM_INLINE_SERVICE_7
+ service-object icmp 
+ service-object tcp destination eq https 
+object-group network DM_INLINE_NETWORK_41
+ network-object object RFC-Network-10
+ network-object object RFC-Network-172
+ network-object object RFC-Network-192
+object-group service DM_INLINE_TCP_25 tcp
+ port-object eq https
+ port-object eq ssh
+object-group network DM_INLINE_NETWORK_42
+ network-object object stash-test.euromoneydigital.com
+ network-object object stash.euromoneydigital.com
+object-group service DM_INLINE_TCP_17 tcp
+ port-object eq www
+ port-object eq https
+object-group service DM_INLINE_TCP_26 tcp
+ port-object eq www
+ port-object eq https
+object-group service DM_INLINE_SERVICE_8
+ service-object object TCP-8443 
+ service-object tcp destination eq www 
+ service-object tcp destination eq https 
+object-group service DM_INLINE_SERVICE_9
+ service-object icmp 
+ service-object tcp destination eq www 
+ service-object tcp destination eq https 
+object-group network EMH_DC
+ network-object object EHM_AM01PADC01_10_122_10_11
+ network-object object EMH_AM01PADC02_10_122_10_12
+ network-object object EMH_AM01PADC03_10_122_10_13
+ network-object object EMH_EU01PADC01_10_121_10_11
+ network-object object EMH_EU01PADC02_10_121_10_12
+ network-object object EMH_EU01PADC03_10_121_10_13
+object-group network DM_INLINE_NETWORK_44
+ network-object object EMH_AM01PICA01_10.122.11.211
+ network-object object EMH_EU01PICA01_10.121.11.211
+ network-object object am01psmtp01_10_122_10_31
+ network-object object AM01PADFS301
+ network-object object eu01pjamf01_10.121.11.132
+ group-object EMH_DC
+ network-object object EU01PADFS301
+ network-object object EU01PSMTP01
+object-group service DomainServices
+ service-object object Active_Directory_Domain_Services 
+ service-object object Kerberos_88_TCP 
+ service-object object Kerberos_88_UDP 
+ service-object object Kerberos_464_TCP 
+ service-object object Kerberos_464_UDP 
+ service-object tcp destination eq domain 
+ service-object udp destination eq domain 
+ service-object icmp 
+ service-object object GP_UDP_138_UDP 
+ service-object tcp destination eq ldap 
+ service-object tcp destination eq ldaps 
+ service-object object RPC_135_TCP 
+ service-object object RTMP 
+ service-object object SMB_445_TCP 
+ service-object object SMB_445_UDP 
+ service-object object TCP-LDAP-GC 
+ service-object object Tcp-137 
+ service-object object UDP-137 
+ service-object object TCP-139 
+ service-object object ntp 
+ service-object tcp destination eq smtp 
+ service-object object udp-ldap 
+object-group service DM_INLINE_SERVICE_10
+ service-object tcp destination eq www 
+ service-object tcp destination eq https 
+ group-object DomainServices
+object-group network DM_INLINE_NETWORK_45
+ network-object object jira.euromoneydigital.com
+ network-object object stash.euromoneydigital.com
+object-group service DM_INLINE_TCP_7 tcp
+ port-object eq www
+ port-object eq https
+object-group network DM_INLINE_NETWORK_46
+ network-object object Dev01_172_20_11_50
+ network-object object Dev02_172_20_11_32
+ network-object object web-staging_10_209_10_21
+ network-object object BCA-Web-SQL_10.209.10.14
+object-group service DM_INLINE_SERVICE_11
+ service-object object MySql 
+ service-object tcp destination eq www 
+ service-object tcp destination eq https 
+ service-object tcp destination eq ssh 
+object-group network DM_INLINE_NETWORK_47
+ network-object object EU01POCTOPUS01
+ network-object object EU01POCTOPUS02
+ network-object object staging_bcaresearch
+ network-object object staging_isis_euromoneydigital_com
+object-group service DM_INLINE_SERVICE_12
+ service-object object TCP-RDP 
+ service-object tcp destination eq www 
+ service-object tcp destination eq https 
+ service-object tcp destination eq ssh 
+object-group network DM_INLINE_NETWORK_51
+ network-object object Azure_Network_10.211.224.0m19
+ network-object object Azure_Network_10.212.192.0m19
+object-group network DM_INLINE_NETWORK_49
+ network-object object RFC-Network-10
+ network-object object RFC-Network-172
+ network-object object RFC-Network-192
+object-group network DM_INLINE_NETWORK_50
+ network-object object stash-test.euromoneydigital.com
+ network-object object stash.euromoneydigital.com
+object-group network DM_INLINE_NETWORK_52
+ network-object host 10.121.234.61
+ network-object object staging.bcaresearch.com
+ network-object object cms.ndr.com
+ network-object object qacms.ndr.com
+object-group service DM_INLINE_TCP_27 tcp
+ port-object eq www
+ port-object eq https
+access-list vpn-clients extended permit ip any object RFC-Network-10 log debugging 
+access-list vpn-clients extended permit ip any object RFC-Network-172 log debugging 
+access-list vpn-clients extended permit ip any object RFC-Network-192 log debugging 
+access-list vpn-clients-1 standard permit 10.0.0.0 255.0.0.0 
+access-list vpn-clients-1 standard permit 172.16.0.0 255.240.0.0 
+access-list vpn-clients-1 standard permit 192.168.0.0 255.255.0.0 
+access-list vpn-clients-1 remark Access to BCA Staging
+access-list vpn-clients-1 standard permit host 40.69.32.164 
+access-list vpn-clients-1 remark Access to BCA Staging
+access-list vpn-clients-1 standard permit host 13.79.166.19 
+access-list TechServOld extended permit ip object EU01PTSESMGR-VIP object EU01-VPN-POOL_10.121.240.0m24 log debugging 
+access-list TechServOld extended permit ip object AvayaG450-A object EU01-VPN-POOL_10.121.240.0m24 log debugging 
+access-list TechServOld extended permit ip object EU08PTSESMGR-VIP object EU01-VPN-POOL_10.121.240.0m24 log debugging 
+access-list TechServOld extended permit ip object AvayaG450-B object EU01-VPN-POOL_10.121.240.0m24 log debugging 
+access-list TechServOld extended permit ip any object-group DM_INLINE_NETWORK_33 log 
+access-list TechServOld extended permit ip any host 206.151.162.244 log debugging 
+access-list TechServOld extended permit ip any host 52.169.88.247 
+access-list TechServOld extended permit ip any host 40.69.32.164 
+access-list TechServOld extended permit ip any host 52.164.205.208 
+access-list TechServOld extended permit ip any host 45.60.13.165 
+access-list TechServOld extended permit ip any host 52.164.203.130 
+access-list TechServOld extended permit ip any object-group DM_INLINE_NETWORK_35 
+access-list TechServOld extended deny ip any object-group DM_INLINE_NETWORK_32 log default 
+access-list TechServOld extended permit tcp any any object-group DM_INLINE_TCP_24 
+access-list 3rd-Party-client1 extended permit tcp any object test1-cacti eq www log debugging 
+access-list 3rd-Party-client1 extended permit tcp any object test2-splarwids eq www log debugging 
+access-list 3rd-Party-client1 extended permit icmp any object-group DM_INLINE_NETWORK_1 object-group ICMP_EchoGroup log debugging 
+access-list 3rd-Party-client1 extended permit object TCP-RDP any object EU01TBFC02 log debugging 
+access-list TechServ standard permit 10.0.0.0 255.0.0.0 
+access-list TechServ standard permit 172.16.0.0 255.240.0.0 
+access-list TechServ standard permit 206.142.222.8 255.255.255.248 
+access-list TechServ standard permit 192.168.0.0 255.255.0.0 
+access-list TechServ standard permit 206.142.224.128 255.255.255.128 
+access-list TechServ standard permit 207.82.66.80 255.255.255.240 
+access-list TechServ standard permit 207.82.67.160 255.255.255.224 
+access-list TechServ standard permit 213.174.210.0 255.255.255.224 
+access-list TechServ standard permit 206.142.198.80 255.255.255.240 
+access-list TechServ standard permit 213.174.213.64 255.255.255.192 
+access-list TechServ standard permit 205.217.111.128 255.255.255.128 
+access-list TechServ standard permit 213.174.212.48 255.255.255.240 
+access-list TechServ standard permit host 206.142.241.220 
+access-list TechServ standard permit host 205.139.17.73 
+access-list TechServ standard permit host 52.169.93.92 
+access-list TechServ standard permit host 52.169.88.247 
+access-list TechServ standard permit host 52.164.203.130 
+access-list TechServ standard permit host 40.69.32.164 
+access-list TechServ standard permit host 13.79.165.188 
+access-list TechServ standard permit 10.99.101.0 255.255.255.0 
+access-list TechServ standard permit host 52.164.205.208 
+access-list TechServ standard permit host 13.79.133.64 
+access-list TechServ standard permit host 13.79.131.247 
+access-list TechServ standard permit host 13.79.131.26 
+access-list TechServ standard permit host 13.79.163.100 
+access-list TechServ standard permit host 13.79.166.19 
+access-list TechServ standard permit host 52.169.95.154 
+access-list TechServ standard permit host 52.169.179.248 
+access-list TechServ standard permit host 52.169.178.66 
+access-list TechServ standard permit host 52.164.209.146 
+access-list TechServ standard permit host 69.30.26.221 
+access-list TechServ standard permit host 168.63.52.85 
+access-list TechServ standard permit host 45.60.13.165 
+access-list TechServ standard permit host 192.168.1.25 
+access-list TechServ standard permit host 192.168.1.114 
+access-list TechServ standard permit host 192.168.1.99 
+access-list TechServ remark Incapsula
+access-list TechServ standard permit 199.83.128.0 255.255.248.0 
+access-list TechServ remark Incapsula
+access-list TechServ remark Incapsula
+access-list TechServ standard permit 198.143.32.0 255.255.224.0 
+access-list TechServ remark Incapsula
+access-list TechServ standard permit 149.126.72.0 255.255.248.0 
+access-list TechServ remark Incapsula
+access-list TechServ standard permit 103.28.248.0 255.255.252.0 
+access-list TechServ remark Incapsula
+access-list TechServ standard permit 45.64.64.0 255.255.252.0 
+access-list TechServ remark Incapsula
+access-list TechServ standard permit 185.11.124.0 255.255.252.0 
+access-list TechServ remark Incapsula
+access-list TechServ standard permit 192.230.64.0 255.255.192.0 
+access-list TechServ remark Incapsula
+access-list TechServ standard permit 45.60.0.0 255.255.0.0 
+access-list TechServ remark Incapsula
+access-list TechServ standard permit 45.223.0.0 255.255.0.0 
+access-list TechServ remark Incapsula
+access-list TechServ standard permit 107.154.0.0 255.255.0.0 
+access-list tranzdmz1_access_in extended permit ip object-group DM_INLINE_NETWORK_2 object EU01-VPN-POOL_10.121.240.0m24 log 
+access-list tranzdmz1_access_in extended permit tcp 10.121.241.0 255.255.255.0 object-group DM_INLINE_NETWORK_4 eq www inactive 
+access-list tranzdmz1_access_in extended deny ip any any log default 
+access-list Deny-All standard deny any4 
+access-list outside_access_in extended deny ip object-group DenyVPN interface outside log disable 
+access-list danwood standard permit host 10.1.7.108 
+access-list danwood standard permit host 10.1.7.109 
+access-list danwood standard permit host 10.1.7.110 
+access-list danwood standard permit host 10.1.7.107 
+access-list danwood standard permit host 10.121.25.31 
+access-list BasicDeveloperFilter extended permit udp any object-group DM_INLINE_NETWORK_22 eq domain 
+access-list BasicDeveloperFilter extended permit icmp any any echo 
+access-list BasicDeveloperFilter extended permit tcp any object EU01_Network_10.121.234.0m24 object-group DM_INLINE_TCP_8 
+access-list BasicDeveloperFilter extended permit tcp any object-group DM_INLINE_NETWORK_14 object-group DM_INLINE_TCP_10 log debugging 
+access-list BasicDeveloperFilter extended permit tcp any object EU01POCTOPUS01 object-group DM_INLINE_TCP_20 log debugging 
+access-list BasicDeveloperFilter extended permit tcp any object-group DM_INLINE_NETWORK_26 eq https log 
+access-list BasicDeveloperFilter extended permit tcp any object fisheye.euromoneydigital.com eq https log debugging 
+access-list BasicDeveloperFilter extended permit object TCP2021-dyntrace any object-group DM_INLINE_NETWORK_39 
+access-list BasicDeveloperFilter extended permit tcp any object-group DM_INLINE_NETWORK_29 object-group DM_INLINE_TCP_21 log debugging 
+access-list BasicDeveloperFilter extended deny ip any object-group DM_INLINE_NETWORK_19 log debugging 
+access-list BasicDeveloperFilter extended permit tcp any any object-group DM_INLINE_TCP_12 log debugging 
+access-list OffshoreDevFilter extended permit udp any object-group DM_INLINE_NETWORK_3 eq domain 
+access-list OffshoreDevFilter extended permit ip any object EU01_Network_10.121.234.0m24 log debugging 
+access-list OffshoreDevFilter extended permit ip any 10.121.233.0 255.255.255.0 log debugging 
+access-list OffshoreDevFilter extended permit object TCP8080 any object EU01TNAV04 log debugging 
+access-list OffshoreDevFilter extended permit ip any object Azure_Prod_Network_10.201.32.0m19 log debugging 
+access-list OffshoreDevFilter extended permit ip any object Azure_UAT_Network_10.201.0.0m19 log debugging 
+access-list OffshoreDevFilter extended permit ip any object Azure_Shared_Network_10.201.224.0m19 
+access-list OffshoreDevFilter extended permit ip any 10.208.32.0 255.255.224.0 
+access-list OffshoreDevFilter extended permit ip any host 52.169.88.247 
+access-list OffshoreDevFilter extended permit ip any host 40.69.32.164 
+access-list OffshoreDevFilter extended permit ip any host 13.79.165.188 
+access-list OffshoreDevFilter extended permit ip any host 52.164.203.130 
+access-list OffshoreDevFilter extended permit ip any host 52.164.205.208 
+access-list OffshoreDevFilter extended permit ip any host 13.79.133.64 
+access-list OffshoreDevFilter extended permit ip any host 13.79.131.247 
+access-list OffshoreDevFilter extended permit ip any object-group DM_INLINE_NETWORK_36 
+access-list OffshoreDevFilter extended permit tcp any host 10.121.54.17 object-group DM_INLINE_TCP_5 
+access-list OffshoreDevFilter extended permit tcp any object sts.euromoneyplc.com eq https log debugging 
+access-list OffshoreDevFilter extended permit ip any object-group DM_INLINE_NETWORK_8 
+access-list OffshoreDevFilter extended permit object-group DM_INLINE_SERVICE_8 any object-group DM_INLINE_NETWORK_11 log 
+access-list OffshoreDevFilter extended permit object TCP-3306-MySQL any object 10.201.132.0ms24 log 
+access-list OffshoreDevFilter extended permit ip any object-group DM_INLINE_NETWORK_13 
+access-list OffshoreDevFilter extended deny ip any object-group DM_INLINE_NETWORK_31 log default 
+access-list OffshoreDevFilter extended permit tcp any any object-group DM_INLINE_TCP_23 
+access-list OffshoreDevTunnelled standard permit 10.121.234.0 255.255.255.0 
+access-list OffshoreDevTunnelled standard permit 10.121.233.0 255.255.255.0 
+access-list OffshoreDevTunnelled standard permit 10.121.10.0 255.255.255.0 
+access-list OffshoreDevTunnelled standard permit 10.55.73.192 255.255.255.224 
+access-list OffshoreDevTunnelled standard permit 10.121.45.0 255.255.255.0 
+access-list OffshoreDevTunnelled standard permit 10.121.11.0 255.255.255.0 
+access-list OffshoreDevTunnelled standard permit host 52.169.93.92 
+access-list OffshoreDevTunnelled standard permit host 52.169.88.247 
+access-list OffshoreDevTunnelled standard permit host 40.69.32.164 
+access-list OffshoreDevTunnelled standard permit host 13.79.165.188 
+access-list OffshoreDevTunnelled standard permit 10.99.0.0 255.255.255.0 
+access-list OffshoreDevTunnelled standard permit 10.99.2.0 255.255.255.0 
+access-list OffshoreDevTunnelled standard permit 10.99.101.0 255.255.255.0 
+access-list OffshoreDevTunnelled standard permit 10.201.0.0 255.255.224.0 
+access-list OffshoreDevTunnelled standard permit 10.201.224.0 255.255.224.0 
+access-list OffshoreDevTunnelled standard permit 10.201.32.0 255.255.224.0 
+access-list OffshoreDevTunnelled standard permit host 10.121.54.17 
+access-list OffshoreDevTunnelled standard permit 10.212.0.0 255.255.0.0 
+access-list OffshoreDevTunnelled standard permit host 13.79.131.247 
+access-list OffshoreDevTunnelled standard permit host 13.79.133.64 
+access-list OffshoreDevTunnelled standard permit host 52.164.205.208 
+access-list OffshoreDevTunnelled standard permit host 52.164.203.130 
+access-list OffshoreDevTunnelled standard permit 10.208.32.0 255.255.224.0 
+access-list OffshoreDevTunnelled standard permit 10.201.128.0 255.255.224.0 
+access-list OffshoreDevTunnelled remark Incapsula
+access-list OffshoreDevTunnelled standard permit 199.83.128.0 255.255.248.0 
+access-list OffshoreDevTunnelled remark Incapsula
+access-list OffshoreDevTunnelled remark Incapsula
+access-list OffshoreDevTunnelled standard permit 198.143.32.0 255.255.224.0 
+access-list OffshoreDevTunnelled remark Incapsula
+access-list OffshoreDevTunnelled standard permit 149.126.72.0 255.255.248.0 
+access-list OffshoreDevTunnelled remark Incapsula
+access-list OffshoreDevTunnelled standard permit 103.28.248.0 255.255.252.0 
+access-list OffshoreDevTunnelled remark Incapsula
+access-list OffshoreDevTunnelled standard permit 45.64.64.0 255.255.252.0 
+access-list OffshoreDevTunnelled remark Incapsula
+access-list OffshoreDevTunnelled standard permit 185.11.124.0 255.255.252.0 
+access-list OffshoreDevTunnelled remark Incapsula
+access-list OffshoreDevTunnelled standard permit 192.230.64.0 255.255.192.0 
+access-list OffshoreDevTunnelled remark Incapsula
+access-list OffshoreDevTunnelled standard permit 45.60.0.0 255.255.0.0 
+access-list OffshoreDevTunnelled remark Incapsula
+access-list OffshoreDevTunnelled standard permit 45.223.0.0 255.255.0.0 
+access-list OffshoreDevTunnelled remark Incapsula
+access-list OffshoreDevTunnelled standard permit 107.154.0.0 255.255.0.0 
+access-list OffshoreDevTunnelled standard permit host 10.121.53.53 
+access-list OffshoreDevTunnelled standard permit host 10.121.53.47 
+access-list OffshoreDevTunnelled standard permit host 10.121.53.32 
+access-list MacUsersTunnelled standard permit 10.0.0.0 255.0.0.0 
+access-list MacUsersTunnelled standard permit 172.16.0.0 255.240.0.0 
+access-list MacUsersTunnelled standard permit 206.142.222.8 255.255.255.248 
+access-list MacUsersTunnelled standard permit 192.168.0.0 255.255.0.0 
+access-list MacUsersTunnelled standard permit 206.142.224.128 255.255.255.128 
+access-list MacUsersTunnelled standard permit 207.82.66.80 255.255.255.240 
+access-list MacUsersTunnelled standard permit 207.82.67.160 255.255.255.224 
+access-list MacUsersTunnelled standard permit 213.174.210.0 255.255.255.224 
+access-list MacUsersTunnelled standard permit 206.142.198.80 255.255.255.240 
+access-list MacUsersTunnelled standard permit 213.174.213.64 255.255.255.192 
+access-list MacUsersTunnelled standard permit 205.217.111.128 255.255.255.128 
+access-list MacUsersTunnelled standard permit 213.174.212.48 255.255.255.240 
+access-list MacUsersTunnelled standard permit host 206.142.241.220 
+access-list MacUsersTunnelled standard permit host 205.139.17.73 
+access-list MacUsersTunnelled standard permit host 52.169.93.92 
+access-list MacUsersTunnelled standard permit host 52.169.88.247 
+access-list MacUsersTunnelled standard permit host 40.69.32.164 
+access-list MacUsersTunnelled standard permit host 13.79.165.188 
+access-list MacUsersTunnelled standard permit host 52.164.203.130 
+access-list MacUsersTunnelled standard permit host 52.164.205.208 
+access-list MacUsersTunnelled standard permit host 13.79.133.64 
+access-list MacUsersTunnelled standard permit host 13.79.131.247 
+access-list MacUsersFilter extended permit ip object EU01PTSESMGR-VIP object EU01-VPN-POOL_10.121.240.0m24 log debugging 
+access-list MacUsersFilter extended permit ip object AvayaG450-A object EU01-VPN-POOL_10.121.240.0m24 log debugging 
+access-list MacUsersFilter extended permit ip object EU08PTSESMGR-VIP object EU01-VPN-POOL_10.121.240.0m24 log debugging 
+access-list MacUsersFilter extended permit ip object AvayaG450-B object EU01-VPN-POOL_10.121.240.0m24 log debugging 
+access-list MacUsersFilter extended permit tcp any object staging.bcaresearch.com object-group DM_INLINE_TCP_27 log 
+access-list MacUsersFilter extended permit ip any 10.0.0.0 255.254.0.0 
+access-list MacUsersFilter extended permit ip any 10.121.0.0 255.255.0.0 log debugging 
+access-list MacUsersFilter extended permit ip any 10.122.0.0 255.255.0.0 log debugging 
+access-list MacUsersFilter extended permit ip any object-group DM_INLINE_NETWORK_5 
+access-list MacUsersFilter extended permit ip any host 206.151.162.244 log debugging 
+access-list MacUsersFilter extended permit ip any host 52.169.93.92 
+access-list MacUsersFilter extended permit ip any host 52.169.88.247 
+access-list MacUsersFilter extended permit ip any host 40.69.32.164 
+access-list MacUsersFilter extended permit ip any host 13.79.165.188 
+access-list MacUsersFilter extended permit ip any host 13.79.131.247 
+access-list MacUsersFilter extended permit ip any host 13.79.133.64 
+access-list MacUsersFilter extended permit ip any host 52.164.205.208 
+access-list MacUsersFilter extended permit ip any host 52.164.203.130 
+access-list MacUsersFilter extended permit tcp any object-group DM_INLINE_NETWORK_12 object-group DM_INLINE_TCP_18 log notifications 
+access-list MacUsersFilter extended permit object TCP-5900 any host 10.68.32.43 log 
+access-list MacUsersFilter extended permit object tcp-3389 any object Azure_Network-10.201.43.0 
+access-list MacUsersFilter extended deny ip any object-group DM_INLINE_NETWORK_30 
+access-list MacUsersFilter extended permit tcp any any object-group DM_INLINE_TCP_22 
+access-list AnyConnect_Client_Local_Print extended deny ip any4 any4 
+access-list AnyConnect_Client_Local_Print extended permit tcp any4 any4 eq lpd 
+access-list AnyConnect_Client_Local_Print remark IPP: Internet Printing Protocol
+access-list AnyConnect_Client_Local_Print remark IPP: Internet Printing Protocol
+access-list AnyConnect_Client_Local_Print remark Windows' printing port
+access-list AnyConnect_Client_Local_Print extended permit tcp any4 any4 eq 631 
+access-list AnyConnect_Client_Local_Print remark mDNS: multicast DNS protocol
+access-list AnyConnect_Client_Local_Print remark Windows' printing port
+access-list AnyConnect_Client_Local_Print remark LLMNR: Link Local Multicast Name Resolution protocol
+access-list AnyConnect_Client_Local_Print extended permit tcp any4 any4 eq 9100 
+access-list AnyConnect_Client_Local_Print remark TCP/NetBIOS protocol
+access-list AnyConnect_Client_Local_Print remark mDNS: multicast DNS protocol
+access-list AnyConnect_Client_Local_Print extended permit udp any4 host 224.0.0.251 eq 5353 
+access-list AnyConnect_Client_Local_Print remark LLMNR: Link Local Multicast Name Resolution protocol
+access-list AnyConnect_Client_Local_Print extended permit udp any4 host 224.0.0.252 eq 5355 
+access-list AnyConnect_Client_Local_Print remark TCP/NetBIOS protocol
+access-list AnyConnect_Client_Local_Print extended permit tcp any4 any4 eq 137 
+access-list AnyConnect_Client_Local_Print extended permit udp any4 any4 eq netbios-ns 
+access-list roliver-acl extended permit object-group TCPUDP any object-group DM_INLINE_NETWORK_6 eq domain log 
+access-list roliver-acl extended permit tcp any object EU01PCIFS01 eq 445 log 
+access-list Legal-Grp-Split-Tunnel-Nets standard permit 10.121.0.0 255.255.0.0 
+access-list Manila-Telephony-Access extended permit ip object EU01-VPN-POOL_10.121.240.0m24 object EU01PTSESMGR-VIP log 
+access-list Manila-Telephony-Access extended permit ip object EU01-VPN-POOL_10.121.240.0m24 object EU08PTSESMGR-VIP log 
+access-list Manila-Telephony-Access remark Manila Telephony access
+access-list Manila-Telephony-Access extended permit ip object EU01-VPN-POOL_10.121.240.0m24 object AvayaG450-B log 
+access-list Manila-Telephony-Access extended permit ip object EU01-VPN-POOL_10.121.240.0m24 object AvayaG450-A log 
+access-list Manila-Telephony-Access extended permit ip object EU01PTSESMGR-VIP object EU01-VPN-POOL_10.121.240.0m24 
+access-list Manila-Telephony-Access extended permit ip object EU08PTSESMGR-VIP object EU01-VPN-POOL_10.121.240.0m24 
+access-list Manila-Telephony-Access extended permit ip object AvayaG450-A object EU01-VPN-POOL_10.121.240.0m24 log 
+access-list Manila-Telephony-Access extended permit ip object AvayaG450-B object EU01-VPN-POOL_10.121.240.0m24 log 
+access-list OntoTextFilter extended permit object-group TCPUDP any object-group DM_INLINE_NETWORK_7 eq domain 
+access-list OntoTextFilter extended permit tcp any 10.121.233.0 255.255.255.0 object-group DM_INLINE_TCP_1 
+access-list OntoTextFilter extended permit tcp any object EU01_Network_10.121.234.0m24 object-group DM_INLINE_TCP_2 
+access-list OntoTextFilter extended permit tcp any object EU01PSTASH01_10.121.54.17 object-group DM_INLINE_TCP_3 
+access-list OntoTextTunnelled standard permit 10.121.0.0 255.255.0.0 
+access-list WhitfordTechFilter extended permit object-group TCPUDP any object-group DM_INLINE_NETWORK_9 eq domain 
+access-list WhitfordTechFilter extended permit object-group DM_INLINE_SERVICE_1 any object-group DM_INLINE_NETWORK_10 
+access-list WhitfordTechFilter extended permit tcp any 10.121.233.0 255.255.255.0 object-group DM_INLINE_TCP_4 
+access-list WhitfordTech standard permit 10.121.233.0 255.255.255.0 
+access-list WhitfordTech standard permit host 10.1.8.200 
+access-list WhitfordTech standard permit host 10.68.160.15 
+access-list WhitfordTech standard permit host 10.1.8.201 
+access-list WhitfordTech standard permit host 10.1.8.204 
+access-list WhitfordTech standard permit host 10.68.160.115 
+access-list WhitfordTech standard permit host 10.215.33.4 
+access-list MetalsDeveloperFilter extended permit udp any object-group DM_INLINE_NETWORK_21 eq domain 
+access-list MetalsDeveloperFilter extended permit icmp any any echo 
+access-list MetalsDeveloperFilter extended permit ip any object EU01_Network_10.121.234.0m24 
+access-list MetalsDeveloperFilter extended permit tcp any object EU01POCTOPUS01 object-group DM_INLINE_TCP_19 log debugging 
+access-list MetalsDeveloperFilter extended permit object-group DM_INLINE_SERVICE_3 any object Azure_UAT_Network_10.201.0.0m19 log debugging 
+access-list MetalsDeveloperFilter extended permit tcp any object-group DM_INLINE_NETWORK_16 eq https log debugging 
+access-list MetalsDeveloperFilter extended permit tcp any object jira.euromoneydigital.com eq https log debugging 
+access-list MetalsDeveloperFilter extended permit tcp any object-group DM_INLINE_NETWORK_17 object-group DM_INLINE_TCP_11 log debugging 
+access-list MetalsDeveloperFilter extended permit object-group DM_INLINE_SERVICE_4 any object Azure_Shared_Network_10.201.224.0m19 log debugging 
+access-list MetalsDeveloperFilter extended permit object-group DM_INLINE_SERVICE_5 any object Azure_Prod_Network_10.201.32.0m19 log debugging 
+access-list MetalsDeveloperFilter extended permit object SMB_445_TCP any object FILES.EMAZURE.INTERNAL 
+access-list MetalsDeveloperFilter extended permit ip any object-group DM_INLINE_NETWORK_18 log debugging 
+access-list MetalsDeveloperFilter extended permit ip any object EU10_Enfield_LAN_172.29.33.0m24 
+access-list MetalsDeveloperFilter extended permit tcp any object sts.euromoneyplc.com eq https log 
+access-list MetalsDeveloperFilter extended permit ip any object Azure_Metals_Network_10.201.128.0m19 log 
+access-list MetalsDeveloperFilter remark CHG0038569
+access-list MetalsDeveloperFilter extended permit ip any object EU01-Metals log 
+access-list MetalsDeveloperFilter remark CHG0038611
+access-list MetalsDeveloperFilter extended permit ip any object Azure_Fastmarkets_Network log notifications 
+access-list MetalsDeveloperFilter extended permit ip any object AZ01-45.60.13.165 
+access-list MetalsDeveloperFilter extended deny ip any object-group DM_INLINE_NETWORK_20 log default 
+access-list MetalsDeveloperFilter extended permit tcp any any object-group DM_INLINE_TCP_13 log default 
+access-list DevOpsFilter extended permit object-group Active-Directory-Services any object-group DM_INLINE_NETWORK_23 
+access-list DevOpsFilter extended permit object-group Active-Directory-Services any object-group DM_INLINE_NETWORK_15 
+access-list DevOpsFilter extended permit icmp any any echo 
+access-list DevOpsFilter extended permit ip any object EU01_Network_10.121.234.0m24 log debugging 
+access-list DevOpsFilter extended permit tcp any host 10.121.223.15 object-group DM_INLINE_TCP_15 log debugging 
+access-list DevOpsFilter extended permit object-group DM_INLINE_SERVICE_12 any object-group DM_INLINE_NETWORK_47 log debugging 
+access-list DevOpsFilter extended permit object-group DM_INLINE_SERVICE_6 any host 10.121.54.17 log debugging 
+access-list DevOpsFilter extended permit tcp any object-group DM_INLINE_NETWORK_28 object-group DM_INLINE_TCP_16 log debugging 
+access-list DevOpsFilter extended permit ip any 10.121.233.0 255.255.255.0 log debugging 
+access-list DevOpsFilter extended permit ip any 10.204.0.0 255.255.224.0 log debugging 
+access-list DevOpsFilter extended permit ip any 10.121.226.0 255.255.255.0 log debugging 
+access-list DevOpsFilter extended permit ip any object-group DM_INLINE_NETWORK_25 
+access-list DevOpsFilter extended permit ip any object Azure_Prod_Network_10.201.32.0m19 log debugging 
+access-list DevOpsFilter extended permit ip any object Azure_UAT_Network_10.201.0.0m19 log debugging 
+access-list DevOpsFilter extended permit ip any object Azure_Shared_Network_10.201.224.0m19 
+access-list DevOpsFilter extended permit ip any object-group DM_INLINE_NETWORK_51 log 
+access-list DevOpsFilter extended permit ip any object-group DM_INLINE_NETWORK_27 
+access-list DevOpsFilter extended permit ip any object Azure_Metals_Network_10.201.128.0m19 log debugging 
+access-list DevOpsFilter extended permit ip any 10.201.224.0 255.255.224.0 log debugging 
+access-list DevOpsFilter extended permit ip any 10.201.32.0 255.255.224.0 log debugging 
+access-list DevOpsFilter extended permit ip any 10.208.224.0 255.255.224.0 log debugging 
+access-list DevOpsFilter extended permit ip any 10.208.32.0 255.255.224.0 log debugging 
+access-list DevOpsFilter extended permit ip any 10.212.0.0 255.255.255.0 log debugging 
+access-list DevOpsFilter extended permit ip any 10.214.0.0 255.255.255.0 log debugging 
+access-list DevOpsFilter extended permit ip any object EMAzureDR_10.215.32.0 log debugging 
+access-list DevOpsFilter extended permit ip any 10.214.2.0 255.255.255.0 log debugging 
+access-list DevOpsFilter extended permit ip any 10.214.3.0 255.255.255.0 log debugging 
+access-list DevOpsFilter extended permit ip any object EU10_Enfield_LAN_172.29.33.0m24 
+access-list DevOpsFilter extended permit ip any object EU01PDTR01 
+access-list DevOpsFilter extended permit ip any object AM01SSQLC01 
+access-list DevOpsFilter extended permit ip any object AM01PCMSTE01 
+access-list DevOpsFilter extended permit ip any object AM01TCMSTE01 
+access-list DevOpsFilter extended permit ip any object EU01-NUGET-01 
+access-list DevOpsFilter extended deny ip any object-group DM_INLINE_NETWORK_24 log default 
+access-list DevOpsFilter extended permit tcp any any object-group DM_INLINE_TCP_14 log default 
+access-list CorpFilter extended permit ip object EU01PTSESMGR-VIP object EU01-VPN-POOL_10.121.240.0m24 log debugging 
+access-list CorpFilter extended permit ip object AvayaG450-A object EU01-VPN-POOL_10.121.240.0m24 log debugging 
+access-list CorpFilter extended permit ip object EU08PTSESMGR-VIP object EU01-VPN-POOL_10.121.240.0m24 log debugging 
+access-list CorpFilter extended permit ip object AvayaG450-B object EU01-VPN-POOL_10.121.240.0m24 log debugging 
+access-list CorpFilter extended permit ip any object RFC-Network-10 log debugging 
+access-list CorpFilter extended permit ip any object RFC-Network-172 log debugging 
+access-list CorpFilter extended permit ip any object RFC-Network-192 log debugging 
+access-list CorpFilter extended permit ip any host 206.151.162.244 log default 
+access-list CorpFilter extended permit ip any host 52.169.88.247 
+access-list CorpFilter extended permit ip any host 40.69.32.164 
+access-list CorpFilter extended permit ip any host 52.164.205.208 
+access-list CorpFilter extended permit ip any host 52.164.203.130 
+access-list CorpFilter extended permit ip any object-group DM_INLINE_NETWORK_34 
+access-list CorpFilter extended permit tcp any object staging.bcaresearch.com object-group DM_INLINE_TCP_17 log 
+access-list CorpFilter extended permit tcp any any object-group DM_INLINE_TCP_24 
+access-list LukeM_Test_Filter extended permit object tcp-3389 any object eu01pinftools_10_121_11_250 log inactive 
+access-list BCA_Split_Tunnel_List standard permit 10.121.0.0 255.255.0.0 
+access-list BCA_Split_Tunnel_List standard permit host 10.209.10.21 
+access-list BCA_Dev_VPN_filter extended permit object-group TCPUDP any object-group DM_INLINE_NETWORK_37 eq domain 
+access-list BCA_Dev_VPN_filter extended permit tcp any object jira.euromoneydigital.com eq https log 
+access-list BCA_Dev_VPN_filter extended permit tcp any object stash-test.euromoneydigital.com object-group DM_INLINE_TCP_6 log 
+access-list BCA_Dev_VPN_filter extended permit tcp any object EU01POCTOPUS01 eq https log 
+access-list BCA_Dev_VPN_filter extended permit tcp any object-group DM_INLINE_NETWORK_52 object-group DM_INLINE_TCP_9 log 
+access-list Basic_Dev_Min_VPN_filter extended permit tcp any object jira.euromoneydigital.com eq https log 
+access-list Basic_Dev_Min_VPN_filter extended permit tcp any object-group DM_INLINE_NETWORK_42 object-group DM_INLINE_TCP_25 log 
+access-list Basic_Dev_Min_VPN_filter extended deny ip any object-group DM_INLINE_NETWORK_41 log debugging 
+access-list SD-Recovery_Policy standard permit 10.0.0.0 255.0.0.0 
+access-list SD-Recovery extended permit object-group DM_INLINE_SERVICE_10 object EU01-VPN-POOL_Recovery_10.121.246.0m24 object-group DM_INLINE_NETWORK_44 log 
+access-list SD-Recovery extended deny ip any any log 
+access-list BCA-RemoteContractors remark BCA-Remote Contractors Access
+access-list BCA-RemoteContractors extended permit object-group TCPUDP object EU01-VPN-POOL_10.121.240.0m24 object-group EMH_DC eq domain log 
+access-list BCA-RemoteContractors remark Access to JIRA and STASH
+access-list BCA-RemoteContractors extended permit tcp object EU01-VPN-POOL_10.121.240.0m24 object-group DM_INLINE_NETWORK_45 object-group DM_INLINE_TCP_7 log 
+access-list BCA-RemoteContractors remark Access to ElasticSearch  dev server Dev02.global.root
+access-list BCA-RemoteContractors extended permit object ElasticSearch object EU01-VPN-POOL_10.121.240.0m24 object Dev02_172_20_11_32 log 
+access-list BCA-RemoteContractors remark Access to BCA Staging
+access-list BCA-RemoteContractors extended permit ip object EU01-VPN-POOL_10.121.240.0m24 object-group DM_INLINE_NETWORK_47 log 
+access-list BCA-RemoteContractors remark Access to Dev and Staging
+access-list BCA-RemoteContractors extended permit object-group DM_INLINE_SERVICE_11 object EU01-VPN-POOL_10.121.240.0m24 object-group DM_INLINE_NETWORK_46 log 
+access-list BCA-RemoteContractors extended deny ip object EU01-VPN-POOL_10.121.240.0m24 any log 
+access-list StashFilter extended permit object-group TCPUDP any object-group EMH_DC eq domain log 
+access-list StashFilter extended permit tcp any object-group DM_INLINE_NETWORK_48 eq https log 
+access-list StashFilter extended permit tcp any object-group DM_INLINE_NETWORK_50 eq ssh log 
+access-list StashFilter extended deny ip any object-group DM_INLINE_NETWORK_49 log 
+pager lines 24
+logging enable
+logging timestamp
+logging buffer-size 1048576
+logging asdm-buffer-size 250
+logging buffered notifications
+logging trap informational
+logging asdm debugging
+logging device-id string FW-EU01-PUB-3
+logging host tranzdmz1 10.121.11.25
+no logging message 113010
+logging message 725001 level debugging
+logging message 725002 level debugging
+logging message 725003 level debugging
+logging message 725007 level debugging
+logging message 419002 level debugging
+logging message 106021 level debugging
+logging message 607001 level debugging
+logging message 302014 level debugging
+logging message 302016 level debugging
+logging message 302021 level debugging
+logging rate-limit 5 60 message 113010
+logging rate-limit 5 60 message 113014
+mtu tranzdmz1 1500
+mtu outside 1500
+mtu management 1500
+ip verify reverse-path interface tranzdmz1
+no failover
+no monitor-interface service-module 
+icmp unreachable rate-limit 1 burst-size 1
+icmp permit any outside
+icmp permit any echo-reply outside
+icmp permit any echo outside
+asdm image disk0:/asdm-7121.bin
+asdm history enable
+arp timeout 14400
+no arp permit-nonconnected
+arp rate-limit 8192
+nat (tranzdmz1,outside) source static any any destination static EU01-VPN-POOL_10.121.240.0m24 EU01-VPN-POOL_10.121.240.0m24
+nat (tranzdmz1,outside) source static any any destination static EU01-VPN-POOL_10.121.239.0m24 EU01-VPN-POOL_10.121.239.0m24
+nat (tranzdmz1,outside) source static any any destination static EU01-VPN-POOL_10.121.238.0m24 EU01-VPN-POOL_10.121.238.0m24
+nat (tranzdmz1,outside) source static any any destination static NETWORK_OBJ_10.121.238.0_24 NETWORK_OBJ_10.121.238.0_24 no-proxy-arp route-lookup
+nat (tranzdmz1,outside) source static any any destination static EU01-VPN-POOL_Recovery_10.121.246.0m24 EU01-VPN-POOL_Recovery_10.121.246.0m24
+nat (any,outside) source dynamic any interface description Global NAT Rule (Hide)
+access-group tranzdmz1_access_in in interface tranzdmz1
+access-group outside_access_in in interface outside
+route outside 0.0.0.0 0.0.0.0 213.174.212.129 1
+route tranzdmz1 10.0.0.0 255.0.0.0 10.121.241.9 1
+route outside 10.121.238.0 255.255.255.0 213.174.212.129 1
+route outside 10.121.239.0 255.255.255.0 213.174.212.129 1
+route outside 10.121.240.0 255.255.255.0 213.174.212.129 1
+route outside 10.121.246.0 255.255.255.0 213.174.212.129 1
+route tranzdmz1 13.79.128.0 255.255.192.0 10.121.241.1 1
+route tranzdmz1 13.79.131.247 255.255.255.255 10.121.241.1 1
+route tranzdmz1 13.79.133.64 255.255.255.255 10.121.241.1 1
+route tranzdmz1 13.79.165.188 255.255.255.255 10.121.241.1 1
+route tranzdmz1 13.79.166.19 255.255.255.255 10.121.241.1 1
+route tranzdmz1 40.69.32.164 255.255.255.255 10.121.241.1 1
+route tranzdmz1 45.60.0.0 255.255.0.0 10.121.241.1 1
+route tranzdmz1 45.60.13.165 255.255.255.255 10.121.241.1 1
+route tranzdmz1 45.64.64.0 255.255.252.0 10.121.241.1 1
+route tranzdmz1 45.223.0.0 255.255.0.0 10.121.241.1 1
+route tranzdmz1 52.164.203.130 255.255.255.255 10.121.241.1 1
+route tranzdmz1 52.164.205.208 255.255.255.255 10.121.241.1 1
+route tranzdmz1 52.169.0.0 255.255.0.0 10.121.241.1 1
+route tranzdmz1 52.169.88.247 255.255.255.255 10.121.241.1 1
+route tranzdmz1 52.169.93.92 255.255.255.255 10.121.241.1 1
+route tranzdmz1 103.28.248.0 255.255.252.0 10.121.241.1 1
+route tranzdmz1 107.154.0.0 255.255.0.0 10.121.241.1 1
+route tranzdmz1 149.126.72.0 255.255.248.0 10.121.241.1 1
+route tranzdmz1 172.16.0.0 255.240.0.0 10.121.241.9 1
+route tranzdmz1 185.11.124.0 255.255.252.0 10.121.241.1 1
+route tranzdmz1 192.168.0.0 255.255.0.0 10.121.241.9 1
+route tranzdmz1 192.230.64.0 255.255.192.0 10.121.241.1 1
+route tranzdmz1 198.143.32.0 255.255.224.0 10.121.241.1 1
+route tranzdmz1 199.83.128.0 255.255.248.0 10.121.241.1 1
+route tranzdmz1 0.0.0.0 0.0.0.0 10.121.241.1 tunneled
+timeout xlate 3:00:00
+timeout pat-xlate 0:00:30
+timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 sctp 0:02:00 icmp 0:00:02
+timeout sunrpc 0:10:00 h323 0:05:00 h225 1:00:00 mgcp 0:05:00 mgcp-pat 0:05:00
+timeout sip 0:30:00 sip_media 0:02:00 sip-invite 0:03:00 sip-disconnect 0:02:00
+timeout sip-provisional-media 0:02:00 uauth 0:05:00 absolute
+timeout tcp-proxy-reassembly 0:01:00
+timeout floating-conn 0:00:00
+timeout conn-holddown 0:00:15
+timeout igp stale-route 0:01:10
+ldap attribute-map CorpMap
+  map-name  memberOf IETF-Radius-Class
+  map-value memberOf CN=SG-Anyconnect-CorpVPN,OU=Groups,OU=Global,DC=global,DC=root Corporate_Policy
+ldap attribute-map LDAP_AttributeMap
+  map-name  memberOf IETF-Radius-Class
+ldap attribute-map MacUsersMap
+  map-name  memberOf IETF-Radius-Class
+  map-value memberOf CN=SG-AnyConnect-MacVPN,OU=Groups,OU=Global,DC=global,DC=root MacUsers-policy
+ldap attribute-map Manila-Telephony-Map
+  map-name  memberOf IETF-Radius-Class
+  map-value memberOf CN=SG-Anyconnect-Manila-Telephony,OU=Groups,OU=Global,DC=global,DC=root Manila-Telephony-policy
+ldap attribute-map SDRecoveryMap
+  map-name  memberOf IETF-Radius-Class
+  map-value memberOf CN=SG-Anyconnect-SD-Recovery,OU=Groups,OU=Global,DC=global,DC=root EII-Recovery-SD
+ldap attribute-map TechServMap
+  map-name  memberOf IETF-Radius-Class
+  map-value memberOf CN=SG-AnyConnect-BasicDeveloper,OU=Groups,OU=Global,DC=global,DC=root BasicDeveloper
+  map-value memberOf CN=SG-AnyConnect-BasicMinimumDeveloper,OU=Groups,OU=Global,DC=global,DC=root GP-Basic_Dev_Min_VPN
+  map-value memberOf CN=SG-AnyConnect-DevOps,OU=Groups,OU=Global,DC=global,DC=root DevOPs
+  map-value memberOf CN=SG-AnyConnect-MetalsDeveloper,OU=Groups,OU=Global,DC=global,DC=root MetalsDeveloper
+  map-value memberOf CN=SG-AnyConnect-OffshoreDevEnhanced,OU=Groups,OU=Global,DC=global,DC=root Offshoredev-policy
+  map-value memberOf CN=SG-AnyConnect-OntoText,OU=Groups,OU=Global,DC=global,DC=root OntoText-policy
+  map-value memberOf CN=SG-AnyConnect-Stash,OU=Groups,OU=Global,DC=global,DC=root Stash
+  map-value memberOf CN=SG-AnyConnect-TechServices,OU=Groups,OU=Global,DC=global,DC=root Tech-serv-policy
+  map-value memberOf CN=SG-AnyConnect-Whitfordtech,OU=Groups,OU=Global,DC=global,DC=root Whitfordtech-EDEN-policy
+  map-value memberOf CN=SG-Anyconnect-BCA_DEV_Members,OU=Groups,OU=Global,DC=global,DC=root GP-BCA_Dev_VPN
+  map-value memberOf CN=SG-Anyconnect-BCA_RemoteContractors,OU=Groups,OU=Global,DC=global,DC=root GP-BCA_RemoteContractors
+  map-value memberOf CN=SG-Anyconnect-LukeM-Test,OU=Groups,OU=Global,DC=global,DC=root LukeM_Test
+aaa-server LDAP_MS_Group protocol ldap
+aaa-server LDAP_MS_Group (tranzdmz1) host 10.121.10.12
+ server-port 636
+ ldap-base-dn DC=global, DC=root
+ ldap-scope subtree
+ ldap-naming-attribute sAMAccountName
+ ldap-login-password *****
+ ldap-login-dn CN=svc-dsro,OU=Service Accounts,OU=Global,DC=global,DC=root
+ ldap-over-ssl enable
+ server-type microsoft
+ ldap-attribute-map TechServMap
+aaa-server LDAP_MS_Group (tranzdmz1) host 10.121.10.13
+ server-port 636
+ ldap-base-dn DC=global, DC=root
+ ldap-scope subtree
+ ldap-naming-attribute sAMAccountName
+ ldap-login-password *****
+ ldap-login-dn CN=svc-dsro,OU=Service Accounts,OU=Global,DC=global,DC=root
+ ldap-over-ssl enable
+ server-type microsoft
+ ldap-attribute-map TechServMap
+aaa-server TACACS protocol tacacs+
+aaa-server TACACS (tranzdmz1) host 10.121.50.32
+ key *****
+aaa-server TACACS (tranzdmz1) host 10.122.50.32
+ key *****
+aaa-server LDAP_MacUsers protocol ldap
+aaa-server LDAP_MacUsers (tranzdmz1) host 10.121.10.12
+ server-port 636
+ ldap-base-dn DC=global, DC=root
+ ldap-scope subtree
+ ldap-naming-attribute userPrincipalName
+ ldap-login-password *****
+ ldap-login-dn CN=svc-dsro,OU=Service Accounts,OU=Global,DC=global,DC=root
+ ldap-over-ssl enable
+ server-type microsoft
+ ldap-attribute-map MacUsersMap
+aaa-server LDAP_MacUsers (tranzdmz1) host 10.121.10.13
+ server-port 636
+ ldap-base-dn DC=global, DC=root
+ ldap-scope subtree
+ ldap-naming-attribute userPrincipalName
+ ldap-login-password *****
+ ldap-login-dn CN=svc-dsro,OU=Service Accounts,OU=Global,DC=global,DC=root
+ ldap-over-ssl enable
+ server-type microsoft
+ ldap-attribute-map MacUsersMap
+aaa-server LDAP-Manila protocol ldap
+aaa-server LDAP-Manila (tranzdmz1) host 10.121.10.12
+ server-port 636
+ ldap-base-dn DC=global, DC=root
+ ldap-scope subtree
+ ldap-naming-attribute sAMAccountName
+ ldap-login-password *****
+ ldap-login-dn CN=svc-dsro,OU=Service Accounts,OU=Global,DC=global,DC=root
+ ldap-over-ssl enable
+ server-type microsoft
+ ldap-attribute-map Manila-Telephony-Map
+aaa-server LDAP-Manila (tranzdmz1) host 10.121.10.13
+ server-port 636
+ ldap-base-dn DC=Global, DC=root
+ ldap-scope subtree
+ ldap-naming-attribute sAMAccountName
+ ldap-login-password *****
+ ldap-login-dn CN=svc-dsro,OU=Service Accounts,OU=Global,DC=global,DC=root
+ ldap-over-ssl enable
+ server-type microsoft
+ ldap-attribute-map Manila-Telephony-Map
+aaa-server AzureMFA protocol radius
+ reactivation-mode depletion deadtime 1
+ max-failed-attempts 5
+aaa-server AzureMFA (tranzdmz1) host 10.122.11.35
+ timeout 60
+ key *****
+ authentication-port 1812
+ accounting-port 1813
+aaa-server AzureMFA (tranzdmz1) host 10.121.11.35
+ timeout 60
+ key *****
+ authentication-port 1812
+ accounting-port 1813
+aaa-server LDAP_Corporate protocol ldap
+aaa-server LDAP_Corporate (tranzdmz1) host 10.121.10.12
+ server-port 636
+ ldap-base-dn DC=global,DC=root
+ ldap-scope subtree
+ ldap-naming-attribute userPrincipalName
+ ldap-login-password *****
+ ldap-login-dn CN=svc-dsro,OU=Service Accounts,OU=Global,DC=global,DC=root
+ ldap-over-ssl enable
+ server-type microsoft
+ ldap-attribute-map CorpMap
+aaa-server LDAP_Corporate (tranzdmz1) host 10.121.10.13
+ server-port 636
+ ldap-base-dn DC=global,DC=root
+ ldap-scope subtree
+ ldap-naming-attribute userPrincipalName
+ ldap-login-password *****
+ ldap-login-dn CN=svc-dsro,OU=Service Accounts,OU=Global,DC=global,DC=root
+ ldap-over-ssl enable
+ server-type microsoft
+ ldap-attribute-map CorpMap
+aaa-server LDAP_SDRecovery protocol ldap
+ max-failed-attempts 1
+aaa-server LDAP_SDRecovery (tranzdmz1) host 10.121.10.12
+ server-port 636
+ ldap-base-dn DC=global,DC=root
+ ldap-scope subtree
+ ldap-naming-attribute sAMAccountName
+ ldap-login-password *****
+ ldap-login-dn CN=svc-dsro,OU=Service Accounts,OU=Global,DC=global,DC=root
+ ldap-over-ssl enable
+ server-type microsoft
+ ldap-attribute-map SDRecoveryMap
+aaa-server LDAP_SDRecovery (tranzdmz1) host 10.121.10.13
+ server-port 636
+ ldap-base-dn DC=global,DC=root
+ ldap-scope subtree
+ ldap-naming-attribute sAMAccountName
+ ldap-login-password *****
+ ldap-login-dn CN=svc-dsro,OU=Service Accounts,OU=Global,DC=global,DC=root
+ ldap-over-ssl enable
+ server-type microsoft
+ ldap-attribute-map SDRecoveryMap
+no user-identity enable
+user-identity default-domain LOCAL
+aaa authentication http console TACACS LOCAL
+aaa authentication ssh console TACACS LOCAL
+aaa authentication enable console TACACS LOCAL
+aaa authorization command LOCAL 
+aaa accounting ssh console TACACS
+aaa accounting command privilege 15 TACACS
+aaa authorization exec authentication-server auto-enable
+aaa authentication login-history
+http server enable
+http server idle-timeout 60
+http 10.1.3.54 255.255.255.255 tranzdmz1
+http 172.18.15.0 255.255.255.0 tranzdmz1
+http 10.121.11.250 255.255.255.255 tranzdmz1
+http 10.1.3.48 255.255.255.255 tranzdmz1
+http 10.122.11.66 255.255.255.255 tranzdmz1
+http 10.68.32.0 255.255.255.0 tranzdmz1
+http 10.80.32.0 255.255.255.0 tranzdmz1
+http 10.68.242.0 255.255.255.0 tranzdmz1
+http redirect outside 80
+snmp-server group Authentication_Only v3 auth 
+snmp-server group Authentication&Encryption v3 priv 
+snmp-server user NPMUser Authentication&Encryption v3 engineID 80000009fe6400ca7d9b2405b81bf6b3a11500b7386930c3d0 encrypted auth sha 7a:2f:50:4c:74:f5:6b:f2:04:e8:f7:ba:4c:54:f6:7a:39:a6:13:78 priv aes 128 7a:2f:50:4c:74:f5:6b:f2:04:e8:f7:ba:4c:54:f6:7a 
+snmp-server host tranzdmz1 10.1.3.54 version 3 NPMUser
+snmp-server location UK - EU01
+snmp-server contact Service Delivery (Operations)
+crypto ipsec ikev1 transform-set ESP-AES-256-MD5 esp-aes-256 esp-md5-hmac 
+crypto ipsec ikev1 transform-set ESP-DES-SHA esp-des esp-sha-hmac 
+crypto ipsec ikev1 transform-set ESP-3DES-SHA esp-3des esp-sha-hmac 
+crypto ipsec ikev1 transform-set ESP-DES-MD5 esp-des esp-md5-hmac 
+crypto ipsec ikev1 transform-set ESP-AES-192-MD5 esp-aes-192 esp-md5-hmac 
+crypto ipsec ikev1 transform-set ESP-3DES-MD5 esp-3des esp-md5-hmac 
+crypto ipsec ikev1 transform-set ESP-AES-256-SHA esp-aes-256 esp-sha-hmac 
+crypto ipsec ikev1 transform-set ESP-AES-128-SHA esp-aes esp-sha-hmac 
+crypto ipsec ikev1 transform-set ESP-AES-192-SHA esp-aes-192 esp-sha-hmac 
+crypto ipsec ikev1 transform-set ESP-AES-128-MD5 esp-aes esp-md5-hmac 
+crypto ipsec ikev1 transform-set ESP-AES-128-SHA-TRANS esp-aes esp-sha-hmac 
+crypto ipsec ikev1 transform-set ESP-AES-128-SHA-TRANS mode transport
+crypto ipsec ikev1 transform-set ESP-AES-128-MD5-TRANS esp-aes esp-md5-hmac 
+crypto ipsec ikev1 transform-set ESP-AES-128-MD5-TRANS mode transport
+crypto ipsec ikev1 transform-set ESP-AES-192-SHA-TRANS esp-aes-192 esp-sha-hmac 
+crypto ipsec ikev1 transform-set ESP-AES-192-SHA-TRANS mode transport
+crypto ipsec ikev1 transform-set ESP-AES-192-MD5-TRANS esp-aes-192 esp-md5-hmac 
+crypto ipsec ikev1 transform-set ESP-AES-192-MD5-TRANS mode transport
+crypto ipsec ikev1 transform-set ESP-AES-256-SHA-TRANS esp-aes-256 esp-sha-hmac 
+crypto ipsec ikev1 transform-set ESP-AES-256-SHA-TRANS mode transport
+crypto ipsec ikev1 transform-set ESP-AES-256-MD5-TRANS esp-aes-256 esp-md5-hmac 
+crypto ipsec ikev1 transform-set ESP-AES-256-MD5-TRANS mode transport
+crypto ipsec ikev1 transform-set ESP-3DES-SHA-TRANS esp-3des esp-sha-hmac 
+crypto ipsec ikev1 transform-set ESP-3DES-SHA-TRANS mode transport
+crypto ipsec ikev1 transform-set ESP-3DES-MD5-TRANS esp-3des esp-md5-hmac 
+crypto ipsec ikev1 transform-set ESP-3DES-MD5-TRANS mode transport
+crypto ipsec ikev1 transform-set ESP-DES-SHA-TRANS esp-des esp-sha-hmac 
+crypto ipsec ikev1 transform-set ESP-DES-SHA-TRANS mode transport
+crypto ipsec ikev1 transform-set ESP-DES-MD5-TRANS esp-des esp-md5-hmac 
+crypto ipsec ikev1 transform-set ESP-DES-MD5-TRANS mode transport
+crypto ipsec ikev2 ipsec-proposal AES256
+ protocol esp encryption aes-256
+ protocol esp integrity sha-1 md5
+crypto ipsec ikev2 ipsec-proposal AES192
+ protocol esp encryption aes-192
+ protocol esp integrity sha-1 md5
+crypto ipsec ikev2 ipsec-proposal AES
+ protocol esp encryption aes
+ protocol esp integrity sha-1 md5
+crypto ipsec ikev2 ipsec-proposal 3DES
+ protocol esp encryption 3des
+ protocol esp integrity sha-1 md5
+crypto ipsec ikev2 ipsec-proposal DES
+ protocol esp encryption des
+ protocol esp integrity sha-1 md5
+crypto ipsec security-association pmtu-aging infinite
+crypto ca trustpoint ASDM_TrustPoint0-1
+ no validation-usage
+ crl configure
+crypto ca trustpoint ASDM_TrustPoint2
+ enrollment terminal
+ crl configure
+crypto ca trustpoint ASDM_TrustPoint4
+ enrollment terminal
+ crl configure
+crypto ca trustpoint ASDM_TrustPoint6
+ enrollment terminal
+ crl configure
+  no protocol ldap
+crypto ca trustpoint ASDM_TrustPoint9
+ keypair ASDM_TrustPoint9
+ crl configure
+  no protocol ldap
+crypto ca trustpoint ASDM_TrustPoint3-1
+ no validation-usage
+ crl configure
+crypto ca trustpoint ASDM_TrustPoint1
+ revocation-check crl none
+ enrollment terminal
+ crl configure
+  no protocol ldap
+crypto ca trustpoint ASDM_TrustPoint5
+ revocation-check crl none
+ enrollment terminal
+ crl configure
+  no protocol ldap
+crypto ca trustpoint ASDM_TrustPoint7
+ keypair ASDM_TrustPoint7
+ crl configure
+crypto ca trustpoint ASDM_TrustPoint8
+ keypair ASDM_TrustPoint8
+ crl configure
+crypto ca trustpoint ASDM_TrustPoint10
+ keypair ASDM_TrustPoint10
+ crl configure
+crypto ca trustpoint ASDM_TrustPoint10-1
+ crl configure
+crypto ca trustpool policy
+crypto ca certificate chain ASDM_TrustPoint0-1
+ certificate ca 01
+    30820436 3082031e a0030201 02020101 300d0609 2a864886 f70d0101 05050030 
+    6f310b30 09060355 04061302 53453114 30120603 55040a13 0b416464 54727573 
+    74204142 31263024 06035504 0b131d41 64645472 75737420 45787465 726e616c 
+    20545450 204e6574 776f726b 31223020 06035504 03131941 64645472 75737420 
+    45787465 726e616c 20434120 526f6f74 301e170d 30303035 33303130 34383338 
+    5a170d32 30303533 30313034 3833385a 306f310b 30090603 55040613 02534531 
+    14301206 0355040a 130b4164 64547275 73742041 42312630 24060355 040b131d 
+    41646454 72757374 20457874 65726e61 6c205454 50204e65 74776f72 6b312230 
+    20060355 04031319 41646454 72757374 20457874 65726e61 6c204341 20526f6f 
+    74308201 22300d06 092a8648 86f70d01 01010500 0382010f 00308201 0a028201 
+    0100b7f7 1a33e6f2 00042d39 e04e5bed 1fbc6c0f cdb5fa23 b6cede9b 113397a4 
+    294c7d93 9fbd4abc 93ed031a e38fcfe5 6d505ad6 9729945a 80b0497a db2e95fd 
+    b8cabf37 382d1e3e 9141ad70 56c7f04f 3fe8329e 74cac890 54e9c65f 0f789d9a 
+    403c0eac 61aa5e14 8f9e87a1 6a50dcd7 9a4eaf05 b3a67194 9c71b350 600ac713 
+    9d380786 02a8e9a8 69261890 ab4cb04f 23ab3a4f 84d8dfce 9fe1696f bbd742d7 
+    6b44e4c7 adee6d41 5f725a71 0837b379 65a459a0 9437f700 2f0dc292 72dad038 
+    72db14a8 45c45d2a 7db7b4d6 c4eeaccd 1344b7c9 2bdd4300 25fa61b9 696a5823 
+    11b7a733 8f567559 f5cd29d7 46b70a2b 65b6d342 6f15b2b8 7bfbefe9 5d53d534 
+    5a270203 010001a3 81dc3081 d9301d06 03551d0e 04160414 adbd987a 34b426f7 
+    fac42654 ef03bde0 24cb541a 300b0603 551d0f04 04030201 06300f06 03551d13 
+    0101ff04 05300301 01ff3081 99060355 1d230481 9130818e 8014adbd 987a34b4 
+    26f7fac4 2654ef03 bde024cb 541aa173 a471306f 310b3009 06035504 06130253 
+    45311430 12060355 040a130b 41646454 72757374 20414231 26302406 0355040b 
+    131d4164 64547275 73742045 78746572 6e616c20 54545020 4e657477 6f726b31 
+    22302006 03550403 13194164 64547275 73742045 78746572 6e616c20 43412052 
+    6f6f7482 0101300d 06092a86 4886f70d 01010505 00038201 0100b09b e08525c2 
+    d623e20f 9606929d 41989cd9 847981d9 1e5b1407 2336658f b0d877bb ac416c47 
+    608351b0 f9323de7 fcf62613 c78016a5 bf5afc87 cf787989 219ae24c 070a8635 
+    bcf2de51 c4d296b7 dc7e4eee 70fd1c39 eb0c0251 142d8ebd 16e0c1df 4675e724 
+    adecf442 b4859370 1067ba9d 06354a18 d32b7acc 5142a17a 63d1e6bb a1c52bc2 
+    36be130d e6bd637e 797ba709 0d40ab6a dd8f8ac3 f6f68c1a 420551d4 45f59fa7 
+    62216815 20433c99 e77cbd24 d8a99117 73883f56 1b313818 b4710f9a cdc80e9e 
+    8e2e1be1 8c9883cb 1f31f144 4cc60473 4976600f c7f8bd17 806b2ee9 cc4c0e5a 
+    9a790f20 0a2ed59e 63261e55 9294d882 175a7bd0 bcc78f4e 8604
+  quit
+crypto ca certificate chain ASDM_TrustPoint6
+ certificate ca 1e24784f6877a39d4e0b01861928fc3d
+    30820386 3082026e a0030201 0202101e 24784f68 77a39d4e 0b018619 28fc3d30 
+    0d06092a 864886f7 0d010105 0500301c 311a3018 06035504 03131145 75726f6d 
+    6f6e6579 20526f6f 74204341 301e170d 31343039 30333135 30313431 5a170d33 
+    35303930 33313531 3134315a 301c311a 30180603 55040313 11457572 6f6d6f6e 
+    65792052 6f6f7420 43413082 0122300d 06092a86 4886f70d 01010105 00038201 
+    0f003082 010a0282 010100be 27de8f43 cd810a86 b8a26991 18dfd94b f9c3546f 
+    8137d3b4 5add2fb5 672f1ecc d47d3612 e427869e 71fd5e35 57113935 8cb7ed0f 
+    82053431 b10cb145 45ad9d98 bd01b78c 25a5cff6 67dbcecd 07361c99 2cc4e4ec 
+    4c968ccd fd739b6c d1fd0718 0414aded 1d0af0e3 68676222 f141cbbf e756cfdf 
+    260aed33 0ab54481 c18d5f5e 27fb5ac5 a0c6ebfc a45249ea 53e063da ddf0ea1c 
+    abc32536 bad45b30 cc639ea5 067fc2ab 5a5ad998 786ca59d 1e0f333a 364f57e5 
+    dbefb393 dd208740 3ba7ba4d b9f3fb4c 64bac5c5 af2bfdc9 f25bee6e 8e30200b 
+    f454f572 b99f6194 cb22fda8 d4275652 727deaf5 e8cbaa63 14f988b0 1bcf3e68 
+    e1fa8d52 4e6bbe6f 187def02 03010001 a381c330 81c0300b 0603551d 0f040403 
+    02018630 0f060355 1d130101 ff040530 030101ff 301d0603 551d0e04 16041471 
+    d3c7b8e6 167c54bd a02f2a73 8ad11a92 5c45d430 1006092b 06010401 82371501 
+    04030201 00306f06 03551d20 04683066 30640621 2b060104 01823715 0885d1a3 
+    4585dca8 10848d99 1184e4b6 338781bf 02370183 12303f30 3d06082b 06010505 
+    07020116 31687474 703a2f2f 706b692e 6575726f 6d6f6e65 79706c63 2e636f6d 
+    2f706b69 2f657572 6f6d6f6e 65796370 732e6874 6d00300d 06092a86 4886f70d 
+    01010505 00038201 010085f7 ef6e659f 428b8a89 bbaa69c7 83c54aee caae4d57 
+    c4dc8b22 9074f2ff 0e8ad90d ee51cd82 62fedf92 70b0b6bd 9c7a598d d1e713c5 
+    5ea7dc3e 7a1f6384 3b3e3c1c 2f2cf791 a4ca1bbd e538c3c2 618e919b 8d940e07 
+    0d62facc 443d7ca6 d9e38142 476a3000 a1c04f8a 15b40dd7 2ed7f28e 2ad9cdcf 
+    0e87589a 0cfd4c7a 506683f6 7a8ecf72 8179744c 1b475fb0 b2bdbd86 1f176e0b 
+    e2cb1f88 5adc88cf c5e2e18f 67011278 acb7b33f 93d46288 a9cb6c55 58f1ad16 
+    60f464fd f937e09a 5f06e891 72d5e03f 851fd5da 89be4489 11fd250a 827934c2 
+    a555e155 6adc999e f73d90f2 c646cf23 7380f112 f69b08c2 2ac00fab 6dba205f 
+    0802b6aa 184cf137 5fac
+  quit
+crypto ca certificate chain ASDM_TrustPoint9
+ certificate ca 3700000010bd533b4896f80838000000000010
+    3082042c 30820314 a0030201 02021337 00000010 bd533b48 96f80838 00000000 
+    0010300d 06092a86 4886f70d 01010505 00301c31 1a301806 03550403 13114575 
+    726f6d6f 6e657920 526f6f74 20434130 1e170d31 34313131 38313530 3531325a 
+    170d3233 31313138 31353135 31325a30 4f311430 12060a09 92268993 f22c6401 
+    19160472 6f6f7431 16301406 0a099226 8993f22c 64011916 06676c6f 62616c31 
+    1f301d06 03550403 13164575 726f6d6f 6e657920 49737375 696e6720 43413031 
+    30820122 300d0609 2a864886 f70d0101 01050003 82010f00 3082010a 02820101 
+    008d97ee 5373d485 f4af69e1 e676cebd 6df43666 bd067a7c fa46a61a 3965db35 
+    754dc2bc 189a14a9 95c9a30b faf1d9d6 7fef4d47 ae9ced53 a28d841e 9a09a1c8 
+    75a96e1e f30fc891 52e9afb0 31d11244 e4e4b6bd 9fe22b68 856ea552 316e7c62 
+    b0a7f64c 2d1c2b89 3bf48b75 3efe9b9f 438aceab aef97620 97302355 1716bd7a 
+    3e579af6 ae4eacde 50461c6a 36417472 92e9c297 0b9efce5 ed536b34 e68b7f00 
+    c1dd001e 0145090c 8dce977a f5b4c1be 28d378d9 7d051ec3 8a2d0891 b67e4b4a 
+    edb68ed8 b2d78a55 c5b95dd6 3e37082b 3f9c93e9 45844a62 6c398e43 fcf23588 
+    01ad3f52 ff40cba5 1d71b1a4 bc98d2ef dc188172 7326d42b 90c6803d ba9acbf0 
+    c3020301 0001a382 01323082 012e3010 06092b06 01040182 37150104 03020100 
+    301d0603 551d0e04 16041409 71025b76 29f46e66 6ed181cc 1d617567 6b8fdb30 
+    1906092b 06010401 82371402 040c1e0a 00530075 00620043 0041300b 0603551d 
+    0f040403 02018630 0f060355 1d130101 ff040530 030101ff 301f0603 551d2304 
+    18301680 1471d3c7 b8e6167c 54bda02f 2a738ad1 1a925c45 d4304a06 03551d1f 
+    04433041 303fa03d a03b8639 68747470 3a2f2f70 6b692e65 75726f6d 6f6e6579 
+    706c632e 636f6d2f 706b692f 4575726f 6d6f6e65 79253230 526f6f74 25323043 
+    412e6372 6c305506 082b0601 05050701 01044930 47304506 082b0601 05050730 
+    02863968 7474703a 2f2f706b 692e6575 726f6d6f 6e657970 6c632e63 6f6d2f70 
+    6b692f45 75726f6d 6f6e6579 25323052 6f6f7425 32304341 2e637274 300d0609 
+    2a864886 f70d0101 05050003 82010100 aba9e127 db252e4e d820079f b346435c 
+    34119c17 8b563338 ca536d83 1a3b6c90 2a29d04f e5c15b73 46745d4a cdb55023 
+    18291aac 97458dd9 d5ca8767 cbb120a9 0981d638 b154433f c8bd1706 745b2044 
+    f844f131 cd685cc8 921378fb 43fe962c 70956b5d e1fde495 ab3fe6c1 94e0c931 
+    e3f45732 4b0d1bb0 9fa57e12 28435719 a191290e 2dc7a9d7 836b5d0c 8c847901 
+    ed4e8377 f7b2aa5c 0acef82b 26fec7bd ec96565a ea006983 63f2b064 e2542dc3 
+    85c29b06 5fb9425f 81a18100 e95aee01 53e40527 dadeb7d4 d50da732 959a2e7c 
+    0be3c033 dcbafbf7 ec735b36 25feb273 eb27bf9b 485368fa 30d17ba7 50ac6bfe 
+    01a2bd02 29b68ec3 53573d07 181abe5c
+  quit
+crypto ca certificate chain ASDM_TrustPoint3-1
+ certificate ca 023456
+    30820354 3082023c a0030201 02020302 3456300d 06092a86 4886f70d 01010505 
+    00304231 0b300906 03550406 13025553 31163014 06035504 0a130d47 656f5472 
+    75737420 496e632e 311b3019 06035504 03131247 656f5472 75737420 476c6f62 
+    616c2043 41301e17 0d303230 35323130 34303030 305a170d 32323035 32313034 
+    30303030 5a304231 0b300906 03550406 13025553 31163014 06035504 0a130d47 
+    656f5472 75737420 496e632e 311b3019 06035504 03131247 656f5472 75737420 
+    476c6f62 616c2043 41308201 22300d06 092a8648 86f70d01 01010500 0382010f 
+    00308201 0a028201 0100dacc 186330fd f417231a 567e5bdf 3c6c38e4 71b77891 
+    d4bca1d8 4cf8a843 b603e94d 21070888 da582f66 3929bd05 788b9d38 e805b76a 
+    7e71a4e6 c460a6b0 ef80e489 280f9e25 d6ed83f3 ada691c7 98c94218 35149dad 
+    9846922e 4fcaf187 43c11695 572d50ef 892d807a 57adf2ee 5f6bd200 8db914f8 
+    141535d9 c046a37b 72c891bf c9552bcd d0973e9c 2664ccdf ce831971 ca4ee6d4 
+    d57ba919 cd55dec8 ecd25e38 53e55c4f 8c2dfe50 2336fc66 e6cb8ea4 391900b7 
+    95023991 0b0efe38 2ed11d05 9af64d3e 6f0f071d af2c1e8f 6039e2fa 36531339 
+    d45e262b db3da814 bd32eb18 03285204 71e5ab33 3de138bb 07368462 9c79ea16 
+    30f45fc0 2be8716b e4f90203 010001a3 53305130 0f060355 1d130101 ff040530 
+    030101ff 301d0603 551d0e04 160414c0 7a98688d 89fbab05 640c117d aa7d65b8 
+    cacc4e30 1f060355 1d230418 30168014 c07a9868 8d89fbab 05640c11 7daa7d65 
+    b8cacc4e 300d0609 2a864886 f70d0101 05050003 82010100 35e3296a e52f5d54 
+    8e295094 9f991a14 e48f782a 6294a227 679ed0cf 1a5e47e9 c1b2a4cf dd411a05 
+    4e9b4bee 4a6f5552 b324a137 0aeb6476 2a2e2cf3 fd3b7590 bffa71d8 c73d37d2 
+    b5059562 b9a6de89 3d367b38 774897ac a6208f2e a6c90cc2 b2994500 c7ce1151 
+    2222e0a5 eab61548 0964ea5e 4f74f705 3ec78a52 0cdb15b4 bd6d9be5 c6b15468 
+    a9e36990 b69aa50f b8b93f20 7dae4ab5 b89ce41d b6abe694 a5c1c783 addbf527 
+    870e046c d5ffdda0 5ded8752 b72b1502 ae39a66a 74e9dac4 e7bc4d34 1ea95c4d 
+    335f9209 2f88665d 7797c71d 7613a9d5 e5f11609 1135d5ac db247170 2c98560b 
+    d917b4d1 e3512b5e 75e8d5d0 dc4f34ed c2056680 a1cbe633
+  quit
+crypto ca certificate chain ASDM_TrustPoint1
+ certificate ca 370000000f6dedc0416caee14d00000000000f
+    3082042c 30820314 a0030201 02021337 0000000f 6dedc041 6caee14d 00000000 
+    000f300d 06092a86 4886f70d 01010505 00301c31 1a301806 03550403 13114575 
+    726f6d6f 6e657920 526f6f74 20434130 1e170d31 34313131 37313635 3233355a 
+    170d3233 31313137 31373032 33355a30 4f311430 12060a09 92268993 f22c6401 
+    19160472 6f6f7431 16301406 0a099226 8993f22c 64011916 06676c6f 62616c31 
+    1f301d06 03550403 13164575 726f6d6f 6e657920 49737375 696e6720 43413032 
+    30820122 300d0609 2a864886 f70d0101 01050003 82010f00 3082010a 02820101 
+    00fe96c4 c641c0eb c6617742 23d0ddb2 a844eec3 132090f8 68de9289 e1716690 
+    ae9f3d20 5041caa6 f9b58190 64d7cdf1 4172c813 2296da5c 618a1ac5 290d90b6 
+    c9d28ecd c4e8daf9 7bdc5ba5 303edf1c 2a30506e d0bef35d b11df73f 3dccb911 
+    b8dfecae ec1cdb2d af93d37f 98f80db4 647c3d09 3e24e9c0 a8870c57 8f01b7b3 
+    9fbb93f3 0c026f8c 11b22468 5c882a50 341f40f6 c5c0c7f2 c43e581f d5883690 
+    4d796fa1 4db120e3 2e414e62 faaa2096 a9b5c416 94da3292 c0429921 6acc6736 
+    c67e2280 5d5ca6f5 14ac705c 2065ae40 507d9828 978c5bf3 67548ae6 7d43978b 
+    80fcc65e 842d6609 c409ccbb 1b55f19f 323d5b9b 456cf74b 01729dac 014ace7b 
+    f5020301 0001a382 01323082 012e3010 06092b06 01040182 37150104 03020100 
+    301d0603 551d0e04 160414e6 e7bffca5 d9278cd0 d53c45cb e2fbcc38 d4977730 
+    1906092b 06010401 82371402 040c1e0a 00530075 00620043 0041300b 0603551d 
+    0f040403 02018630 0f060355 1d130101 ff040530 030101ff 301f0603 551d2304 
+    18301680 1471d3c7 b8e6167c 54bda02f 2a738ad1 1a925c45 d4304a06 03551d1f 
+    04433041 303fa03d a03b8639 68747470 3a2f2f70 6b692e65 75726f6d 6f6e6579 
+    706c632e 636f6d2f 706b692f 4575726f 6d6f6e65 79253230 526f6f74 25323043 
+    412e6372 6c305506 082b0601 05050701 01044930 47304506 082b0601 05050730 
+    02863968 7474703a 2f2f706b 692e6575 726f6d6f 6e657970 6c632e63 6f6d2f70 
+    6b692f45 75726f6d 6f6e6579 25323052 6f6f7425 32304341 2e637274 300d0609 
+    2a864886 f70d0101 05050003 82010100 790ef989 2209897d ddba2948 db717a48 
+    e969fc62 6dcb6f8c d384e063 12c4c82a f5a53035 7198f970 9a9449a1 6ef57080 
+    1c18f83d 699b191f 7cfd0ecd 32e543e0 915fdf96 90274514 483f9fb3 211d2f80 
+    ec1f9c0a c55eac5c e8b7dad9 eebb3b7a b701f35c 82d256aa 1add90bb fcb0edfd 
+    533b4ff5 9fabdcab 3888158d 6fc8f447 f205783a 524085d1 99bd4dbd d84ed984 
+    19aeec07 dfe149b9 dc594c96 27bbff9f a28a7f7c 2c4472a4 15622aa5 923b36ea 
+    74a0f404 a25fb84b 4cc22004 833f62b9 f541ccc6 f27a1824 9908491d b0035d23 
+    87ddf7e8 cc7be4e1 f2ad8695 139a1807 6722180f a57c1f94 059c53fc 4a339501 
+    05979f5e 9d574953 6e536eaf b19ff94e
+  quit
+crypto ca certificate chain ASDM_TrustPoint5
+ certificate ca 37000000117dbf065449873da1000000000011
+    30820451 30820339 a0030201 02021337 00000011 7dbf0654 49873da1 00000000 
+    0011300d 06092a86 4886f70d 01010b05 00301c31 1a301806 03550403 13114575 
+    726f6d6f 6e657920 526f6f74 20434130 1e170d31 35303632 35313332 3534325a 
+    170d3234 30363235 31333335 34325a30 4f311430 12060a09 92268993 f22c6401 
+    19160472 6f6f7431 16301406 0a099226 8993f22c 64011916 06676c6f 62616c31 
+    1f301d06 03550403 13164575 726f6d6f 6e657920 49737375 696e6720 43413032 
+    30820122 300d0609 2a864886 f70d0101 01050003 82010f00 3082010a 02820101 
+    00fe96c4 c641c0eb c6617742 23d0ddb2 a844eec3 132090f8 68de9289 e1716690 
+    ae9f3d20 5041caa6 f9b58190 64d7cdf1 4172c813 2296da5c 618a1ac5 290d90b6 
+    c9d28ecd c4e8daf9 7bdc5ba5 303edf1c 2a30506e d0bef35d b11df73f 3dccb911 
+    b8dfecae ec1cdb2d af93d37f 98f80db4 647c3d09 3e24e9c0 a8870c57 8f01b7b3 
+    9fbb93f3 0c026f8c 11b22468 5c882a50 341f40f6 c5c0c7f2 c43e581f d5883690 
+    4d796fa1 4db120e3 2e414e62 faaa2096 a9b5c416 94da3292 c0429921 6acc6736 
+    c67e2280 5d5ca6f5 14ac705c 2065ae40 507d9828 978c5bf3 67548ae6 7d43978b 
+    80fcc65e 842d6609 c409ccbb 1b55f19f 323d5b9b 456cf74b 01729dac 014ace7b 
+    f5020301 0001a382 01573082 01533010 06092b06 01040182 37150104 03020101 
+    30230609 2b060104 01823715 02041604 14a40d46 3349179d 771c530e de94d572 
+    b14c420e 57301d06 03551d0e 04160414 e6e7bffc a5d9278c d0d53c45 cbe2fbcc 
+    38d49777 30190609 2b060104 01823714 02040c1e 0a005300 75006200 43004130 
+    0b060355 1d0f0404 03020186 300f0603 551d1301 01ff0405 30030101 ff301f06 
+    03551d23 04183016 801471d3 c7b8e616 7c54bda0 2f2a738a d11a925c 45d4304a 
+    0603551d 1f044330 41303fa0 3da03b86 39687474 703a2f2f 706b692e 6575726f 
+    6d6f6e65 79706c63 2e636f6d 2f706b69 2f457572 6f6d6f6e 65792532 30526f6f 
+    74253230 43412e63 726c3055 06082b06 01050507 01010449 30473045 06082b06 
+    01050507 30028639 68747470 3a2f2f70 6b692e65 75726f6d 6f6e6579 706c632e 
+    636f6d2f 706b692f 4575726f 6d6f6e65 79253230 526f6f74 25323043 412e6372 
+    74300d06 092a8648 86f70d01 010b0500 03820101 00aa9fd7 71f4f62b 26cb7b15 
+    7e82508e fdfb21c8 6588965e cbb09923 0d475149 caa01a95 36c0d8bd 1acfdda2 
+    3fd0e88e 6767122e ac325523 16959edb 8c180ec3 a183e92b 55778666 8a19ac05 
+    38f56868 2ba4bbbe 6a9e4a37 e07497f9 689a7466 e219c7e1 f7a15804 f39a3d61 
+    bff165de df291421 3c894b43 3cc16975 1d103860 3ff8902e 2d95488c 7ca9b4b8 
+    8e9e5b03 ba704dd8 649f1fe7 01122fdf bb5dbc21 635a8e2b a4aea13d 3c0e8cb4 
+    f2a24c05 b707f2d2 89cd5d48 2a3768be 903b1770 141550c1 f7ac5cee 480a868f 
+    8079c657 0593d3ab 9b8801aa 6159d5c5 87a90423 7bdaea55 b0025a5e 79f1197a 
+    5b3af1ed 58896479 5992cbe0 f22bd80c c8137d24 5b
+  quit
+crypto ca certificate chain ASDM_TrustPoint7
+ certificate 16000037ef8b2e8e062c64c3c80001000037ef
+    3082066d 30820555 a0030201 02021316 000037ef 8b2e8e06 2c64c3c8 00010000 
+    37ef300d 06092a86 4886f70d 01010b05 00304f31 14301206 0a099226 8993f22c 
+    64011916 04726f6f 74311630 14060a09 92268993 f22c6401 19160667 6c6f6261 
+    6c311f30 1d060355 04031316 4575726f 6d6f6e65 79204973 7375696e 67204341 
+    3031301e 170d3137 30333031 31303238 33375a17 0d313930 33303131 30323833 
+    375a3024 31223020 06035504 03131966 772d6575 30312d70 75622d33 2e676c6f 
+    62616c2e 726f6f74 30820122 300d0609 2a864886 f70d0101 01050003 82010f00 
+    3082010a 02820101 00cdb494 208e5c58 f91386e9 1ca6603c a5bc1b69 12caa3d9 
+    e846b400 83cc6a1a 242279aa 23e348d7 7c2d298f 5019e9a5 399afb2c 4d203340 
+    a4d1a2dd 3b0b2fe7 7df17074 c45d5742 a69f66d2 d412d2fe a1b1523d b1ba1dac 
+    36b4e154 12492a86 6437a0e4 88fd73d6 1866f9ae 140d0d7b ea0261d1 338b7027 
+    76e6fcf3 7412e81e 46653c2a c025ae4a 1bf1d92a 181e7304 4ef40b37 476662c5 
+    ff2f0589 02275da1 b7bd8ee3 c4ece27f 2e1c3452 6c858dff cc817d91 6e2db10e 
+    199721c6 86a7bf4f cc42a7a9 835a5781 66d74448 1f938ce2 5bef62af 022945c4 
+    b6f62a5b 628bf595 b558378e dd966bb2 3d00b672 fef5b366 ee608ece 8b854848 
+    ffcdc1d4 f658fab7 f9020301 0001a382 036b3082 0367303d 06092b06 01040182 
+    37150704 30302e06 262b0601 04018237 150885d1 a34585dc a810848d 991184e4 
+    b6338781 bf023785 d4ca3883 edc83d02 01640201 17301306 03551d25 040c300a 
+    06082b06 01050507 0301300b 0603551d 0f040403 0205a030 1b06092b 06010401 
+    8237150a 040e300c 300a0608 2b060105 05070301 301d0603 551d0e04 160414a9 
+    31824b3a c90766c7 9ede769d b972ac5e c5037830 33060355 1d11042c 302a8219 
+    66772d65 7530312d 7075622d 332e676c 6f62616c 2e726f6f 74820d66 772d6575 
+    30312d70 75622d33 301f0603 551d2304 18301680 14097102 5b7629f4 6e666ed1 
+    81cc1d61 75676b8f db308201 20060355 1d1f0482 01173082 01133082 010fa082 
+    010ba082 0107863e 68747470 3a2f2f70 6b692e65 75726f6d 6f6e6579 706c632e 
+    636f6d2f 706b692f 4575726f 6d6f6e65 79253230 49737375 696e6725 32304341 
+    30312e63 726c8681 c46c6461 703a2f2f 2f434e3d 4575726f 6d6f6e65 79253230 
+    49737375 696e6725 32304341 30312c43 4e3d4555 30315049 43413031 2c434e3d 
+    4344502c 434e3d50 75626c69 63253230 4b657925 32305365 72766963 65732c43 
+    4e3d5365 72766963 65732c43 4e3d436f 6e666967 75726174 696f6e2c 44433d67 
+    6c6f6261 6c2c4443 3d726f6f 743f6365 72746966 69636174 65526576 6f636174 
+    696f6e4c 6973743f 62617365 3f6f626a 65637443 6c617373 3d63524c 44697374 
+    72696275 74696f6e 506f696e 74308201 4c06082b 06010505 07010104 82013e30 
+    82013a30 4d06082b 06010505 07300286 41687474 703a2f2f 706b692e 6575726f 
+    6d6f6e65 79706c63 2e636f6d 2f706b69 2f457572 6f6d6f6e 65792532 30497373 
+    75696e67 25323043 41303128 31292e63 72743081 b906082b 06010505 07300286 
+    81ac6c64 61703a2f 2f2f434e 3d457572 6f6d6f6e 65792532 30497373 75696e67 
+    25323043 4130312c 434e3d41 49412c43 4e3d5075 626c6963 2532304b 65792532 
+    30536572 76696365 732c434e 3d536572 76696365 732c434e 3d436f6e 66696775 
+    72617469 6f6e2c44 433d676c 6f62616c 2c44433d 726f6f74 3f634143 65727469 
+    66696361 74653f62 6173653f 6f626a65 6374436c 6173733d 63657274 69666963 
+    6174696f 6e417574 686f7269 7479302d 06082b06 01050507 30018621 68747470 
+    3a2f2f6f 6373702e 6575726f 6d6f6e65 79706c63 2e636f6d 2f6f6373 70300d06 
+    092a8648 86f70d01 010b0500 03820101 0022b030 0c853b4c cc3587ba aca17bf6 
+    a3338b1c ee53a135 f5787be5 ce67a12a 231c4f04 8d565daf 6c7c0059 e0294534 
+    2a2dac10 de3e4a30 50d9a92e 18c4b873 fe0e372f fb3832d4 463c2786 a11f9338 
+    7ce34412 58b9be40 2dee16a9 b14bea36 d7990419 988cc4ab 1973eff6 0e990807 
+    f67955c5 922a2c46 7961c4f7 67b0e0c4 2804715c fd92915c 99f6adee e34d6fe4 
+    376de494 213222aa bacf0757 ee9a709d f1212583 39b2d79e 3f7a8fdc c3100c2a 
+    f1a0678d 774a8037 5eac0510 31916c47 939a1e56 d497b8f0 7aaa7260 c4b3f962 
+    809e189e c5bcc47f be6ca7e1 e344d97e 823de14d 607cbbcf 8a914122 a0731dc4 
+    71963d3a a63ddd8e f6b1ac88 ebea00e2 f6
+  quit
+crypto ca certificate chain ASDM_TrustPoint8
+ certificate ca 023a6f
+    3082044f 30820337 a0030201 02020302 3a6f300d 06092a86 4886f70d 01010b05 
+    00304231 0b300906 03550406 13025553 31163014 06035504 0a130d47 656f5472 
+    75737420 496e632e 311b3019 06035504 03131247 656f5472 75737420 476c6f62 
+    616c2043 41301e17 0d313331 31303532 31333635 305a170d 32323035 32303231 
+    33363530 5a304431 0b300906 03550406 13025553 31163014 06035504 0a130d47 
+    656f5472 75737420 496e632e 311d301b 06035504 03131447 656f5472 75737420 
+    53534c20 4341202d 20473330 82012230 0d06092a 864886f7 0d010101 05000382 
+    010f0030 82010a02 82010100 e3be7e0a 86a3cf6b 6d3d2ba1 97ad4924 4dd777b9 
+    347908a5 9ea29ede 4712923d 7eea1986 b1e84f3d 5ff7d0a7 779a5b1f 0a03b519 
+    53dba521 9469639d 6a4c910c 1047be11 fa6c8625 b7ab0468 42380965 f014da19 
+    9efa6b0b ab62ef8d a7ef6370 23a8af81 f3d16e88 6753ec12 a429758a a7f2573d 
+    a2839897 f20a7dd4 e7436e30 78622259 59b87127 45aa0f66 c6553ffa 32172b31 
+    8f46a0fa 69147c9d 9f5ae2eb 334e10a6 b3ed7763 d8c39ef4 dddf799a 7ad4eede 
+    dd9accc3 b7a95dcc 113a07bb 6f97a401 2347951f a377fa58 92c6c7d0 bdcf9318 
+    42b77ef7 9e65ead5 3bcaedac c570a1fe d4109af0 120444ac 1a5b7850 45574c6f 
+    bd80cb81 5c2db3bc 76a11e65 02030100 01a38201 4a308201 46301f06 03551d23 
+    04183016 8014c07a 98688d89 fbab0564 0c117daa 7d65b8ca cc4e301d 0603551d 
+    0e041604 14d26ff7 96f4853f 723c307d 23da8578 9ba37c5a 7c301206 03551d13 
+    0101ff04 08300601 01ff0201 00300e06 03551d0f 0101ff04 04030201 06303606 
+    03551d1f 042f302d 302ba029 a0278625 68747470 3a2f2f67 312e7379 6d63622e 
+    636f6d2f 63726c73 2f677467 6c6f6261 6c2e6372 6c302f06 082b0601 05050701 
+    01042330 21301f06 082b0601 05050730 01861368 7474703a 2f2f6732 2e73796d 
+    63622e63 6f6d304c 0603551d 20044530 43304106 0a608648 0186f845 01073630 
+    33303106 082b0601 05050702 01162568 7474703a 2f2f7777 772e6765 6f747275 
+    73742e63 6f6d2f72 65736f75 72636573 2f637073 30290603 551d1104 223020a4 
+    1e301c31 1a301806 03550403 13115379 6d616e74 6563504b 492d312d 35333930 
+    0d06092a 864886f7 0d01010b 05000382 010100a0 d4f72cfb 740b7f64 f1cd436a 
+    9f62531c 027c9890 a2ee4f68 d4201a73 123e77b3 50eb72bc ee88be7f 17ea778f 
+    8361954f 84a1cb32 4f6c21be d269967d 63bddc2b a81fd013 8470fef6 359589f9 
+    a677b046 c8bbb713 f5c96069 d64cfed2 8eefd360 c18080e1 e7fb8b6f 21794ae0 
+    dca91bc1 b7fbc349 595cb577 0744d497 fc490089 6f064e01 7019ac2f 11c0e2e6 
+    0f2f864b 8d7bc3b9 a72ef4f1 ac163e39 49519e17 4b4f103a 5ba5a892 6ffdfad6 
+    0b034d47 565719f3 cb6bf5f3 d6cfb0f5 f5a311d2 20531334 37052c43 5a63df8d 
+    40d6851e 51e95117 1e0356c9 f130ade7 9b11a2b9 d031819b 68b1d9e8 f3e6947e 
+    c7ae132f 87edd025 b068f9de 085af329 ccd492
+  quit
+crypto ca certificate chain ASDM_TrustPoint10
+ certificate ca 0546fe1823f7e1941da39fce14c46173
+    3082048b 30820373 a0030201 02021005 46fe1823 f7e1941d a39fce14 c4617330 
+    0d06092a 864886f7 0d01010b 05003061 310b3009 06035504 06130255 53311530 
+    13060355 040a130c 44696769 43657274 20496e63 31193017 06035504 0b131077 
+    77772e64 69676963 6572742e 636f6d31 20301e06 03550403 13174469 67694365 
+    72742047 6c6f6261 6c20526f 6f742043 41301e17 0d313731 31303631 32323334 
+    355a170d 32373131 30363132 32333435 5a305e31 0b300906 03550406 13025553 
+    31153013 06035504 0a130c44 69676943 65727420 496e6331 19301706 0355040b 
+    13107777 772e6469 67696365 72742e63 6f6d311d 301b0603 55040313 1447656f 
+    54727573 74205253 41204341 20323031 38308201 22300d06 092a8648 86f70d01 
+    01010500 0382010f 00308201 0a028201 0100bf8a d1634de1 18ea875d e8163c8f 
+    7fb6be87 1737a40c f8313f9f 45544021 d79d079b ca03234a bd9bed85 02633f9f 
+    85b9ec28 eff28622 dbf84d54 41c5b442 7fcf3317 010e8290 52d3c734 a4c1a101 
+    da32a040 ad1f59e4 33fca0c3 96ac686c d3e89973 8c261077 cbb73f39 32e8d259 
+    28ee0786 e2093b85 f8aa69f6 a96b9f58 ad72c85b 8766ae08 e074fb2d 53436283 
+    3d8f854c 1197dc1e fc5030b8 8308325e 5c5cc4e1 75204aeb a5d6752d dc2d7d7c 
+    e0d0fe7c 75a14e40 02849ad9 0d5a2ea0 acf3358a 2aead65a 5a6c8e2c abf6defd 
+    78472679 7aaa22ea a9e67112 03d3f8ba 53d2799c bd64acf6 1b63bb4d 8f3802f8 
+    f0575dc5 aa255a0c 5dc530fe 2053196c e9c30203 010001a3 82014030 82013c30 
+    1d060355 1d0e0416 04149058 ffb09c75 a8515477 b1edf2a3 4316389e 6cc5301f 
+    0603551d 23041830 16801403 de503556 d14cbb66 f0a3e21b 1bc397b2 3dd15530 
+    0e060355 1d0f0101 ff040403 02018630 1d060355 1d250416 30140608 2b060105 
+    05070301 06082b06 01050507 03023012 0603551d 130101ff 04083006 0101ff02 
+    01003034 06082b06 01050507 01010428 30263024 06082b06 01050507 30018618 
+    68747470 3a2f2f6f 6373702e 64696769 63657274 2e636f6d 30420603 551d1f04 
+    3b303930 37a035a0 33863168 7474703a 2f2f6372 6c332e64 69676963 6572742e 
+    636f6d2f 44696769 43657274 476c6f62 616c526f 6f744341 2e63726c 303d0603 
+    551d2004 36303430 32060455 1d200030 2a302806 082b0601 05050702 01161c68 
+    74747073 3a2f2f77 77772e64 69676963 6572742e 636f6d2f 43505330 0d06092a 
+    864886f7 0d01010b 05000382 01010030 f187553d 8408fc2e 5e6aba7c d2cdd52c 
+    e3be02da 5d8977ed f4e956c0 92f02a55 2d45f71c 2a3f105b f3e9e1be e1e90025 
+    b9f7a3c1 031be39e 4e8e921b 099552f9 ac18fd1f 29018b17 0a7334f4 671255ee 
+    22bccb30 ca80993f fbcf127f cb3d1847 85d8143e 4f0c943f 7bf511a8 516cfba8 
+    6030a890 a18b6f2e 45db37b6 1c7ebd16 5921b132 67ad8da3 4b493f3b 12192cfc 
+    9d0fff8c ff01230a f3040507 e5670101 b9af8167 eb29cbaf f8fc863e a45c7384 
+    f9e53973 ac19f303 3677a029 68f5f4ef 3bd3ee88 730aac2e 95ea6822 d2cdac6b 
+    f81b5e53 c20fd676 e1750cc4 9125c085 530ee281 d10e1830 c967a4df d00a1278 
+    074005b1 0f835343 423be7fb f177fb
+  quit
+ certificate 0c68e464551dce3dae6d34cd37ac30c9
+    308206a8 30820590 a0030201 0202100c 68e46455 1dce3dae 6d34cd37 ac30c930 
+    0d06092a 864886f7 0d01010b 0500305e 310b3009 06035504 06130255 53311530 
+    13060355 040a130c 44696769 43657274 20496e63 31193017 06035504 0b131077 
+    77772e64 69676963 6572742e 636f6d31 1d301b06 03550403 13144765 6f547275 
+    73742052 53412043 41203230 3138301e 170d3138 30373330 30303030 30305a17 
+    0d323030 37323931 32303030 305a3081 88310b30 09060355 04061302 4742310f 
+    300d0603 55040813 064c6f6e 646f6e31 0f300d06 03550407 13064c6f 6e646f6e 
+    312d302b 06035504 0a132445 75726f6d 6f6e6579 20496e73 74697475 74696f6e 
+    616c2049 6e766573 746f7220 504c4331 0b300906 0355040b 13024954 311b3019 
+    06035504 030c122a 2e657572 6f6d6f6e 6579706c 632e636f 6d308201 22300d06 
+    092a8648 86f70d01 01010500 0382010f 00308201 0a028201 0100a716 12da5a8e 
+    1d82ee2e 2c0886bf 70001ecc 2118d7c5 184f6e53 c13fdff8 1eeccd66 9ff921f0 
+    0a41af05 537c27ad 657a3cbf bbc6a92f 1695a7c0 e3ada998 b6df02a6 5d37f9b8 
+    aad3115c 2358ff90 01f8dac9 1fe3d604 a745a843 3f3cdea5 e0de0dfd 36b97a14 
+    757a4e38 d576e215 fbd8f490 9efab62b cfa7b969 05a5f793 3d71a250 c9e99ac5 
+    bd98ddd2 46fa431e 92ad2c3b bb5798b0 be2f9da1 5836618b 16587075 a025fc25 
+    242a1b30 76d59ef9 707e7cdc 7ecd5365 da34b5c2 be4d5cb5 6c1b29b4 cb4280de 
+    770d1896 617e0e51 9539f96e fc4a33e4 b71cb132 0d642b8f 3b0fbf38 6e2a4413 
+    b783a408 0d824097 ec31c00f 898c76cc d5b9b6c3 1bcea881 08d70203 010001a3 
+    82033530 82033130 1f060355 1d230418 30168014 9058ffb0 9c75a851 5477b1ed 
+    f2a34316 389e6cc5 301d0603 551d0e04 160414c7 112175b7 1a4d9b75 ddf43e5f 
+    894d5483 42114330 2f060355 1d110428 30268212 2a2e6575 726f6d6f 6e657970 
+    6c632e63 6f6d8210 6575726f 6d6f6e65 79706c63 2e636f6d 300e0603 551d0f01 
+    01ff0404 030205a0 301d0603 551d2504 16301406 082b0601 05050703 0106082b 
+    06010505 07030230 3e060355 1d1f0437 30353033 a031a02f 862d6874 74703a2f 
+    2f636470 2e67656f 74727573 742e636f 6d2f4765 6f547275 73745253 41434132 
+    3031382e 63726c30 4c060355 1d200445 30433037 06096086 480186fd 6c010130 
+    2a302806 082b0601 05050702 01161c68 74747073 3a2f2f77 77772e64 69676963 
+    6572742e 636f6d2f 43505330 08060667 810c0102 02307506 082b0601 05050701 
+    01046930 67302606 082b0601 05050730 01861a68 7474703a 2f2f7374 61747573 
+    2e67656f 74727573 742e636f 6d303d06 082b0601 05050730 02863168 7474703a 
+    2f2f6361 63657274 732e6765 6f747275 73742e63 6f6d2f47 656f5472 75737452 
+    53414341 32303138 2e637274 30090603 551d1304 02300030 82017d06 0a2b0601 
+    0401d679 02040204 82016d04 82016901 67007600 a4b90990 b4185814 87bb13a2 
+    cc67700a 3c359804 f91bdfb8 e377cd0e c80ddc10 00000164 eb082671 00000403 
+    00473045 0220139f 80cc386f e839dbe8 7e732141 7c2e6b18 5f82dd3d cd9d57b0 
+    d7dfa2b9 b2ac0221 00e1e11f 3e0545ea 8bf2176f a2851494 f3f16023 6e075897 
+    6fb7d1e3 60230653 ec007500 8775bfe7 597cf88c 43995fbd f36eff56 8d475636 
+    ff4ab560 c1b4eaff 5ea0830f 00000164 eb082757 00000403 00463044 02203d33 
+    90dbabd9 65477ae8 0b95cce1 beb050d8 2d8a686d e88d7655 7ca7c0c7 bae80220 
+    2b3020b2 b77560eb 674cc514 5f530520 b943830b 90f82043 b26eb954 c90fa4e3 
+    007600bb d9dfbc1f 8a71b593 942397aa 927b4738 57950aab 52e81a90 9664368e 
+    1ed18500 000164eb 0826a200 00040300 47304502 206cfd9c 34d481a5 8e3ee0e2 
+    1f831b8a 426d10ec ccf84cbf 86188201 787ae9ac 01022100 d2fbc24b e9ba2f9d 
+    4e2a54e0 16a278ed 1210497d ce65c1e6 03ff3e24 220df76a 300d0609 2a864886 
+    f70d0101 0b050003 82010100 183ae2b7 6fcebb2e 0accc8db 30ed229d fbc8cd45 
+    dcc03240 20e1623d bd01947a 2680c67e 4098d6fd e1fb6bc4 44ef3ca5 20b1212f 
+    8171a10a b42d3d64 7663a2bd 0fe74236 ed09cf73 9b2f96d6 7311a1a9 1b0e50f1 
+    c2f76acf 145edc45 79e563bc d90b57d7 29899296 46bce9f6 20009710 df67d5ab 
+    2d630e39 5508228f 393895fe 9408ad07 c45c9dd7 97c3154e ea48411c 6e8db635 
+    db23ee4a 11feebd7 95aaf0b7 7f4b9b3f 005bd32b 41b8707d 651b6f9d 7cf78175 
+    803e1c3a 05a4bed7 8699e2fb 7fc787b1 8a9340c4 02a91c4a 0f8b51b8 99d665f0 
+    cbf365f7 88137095 04410345 7fbef54a 5458be19 55583015 da1a8456 b4b6a373 
+    00309859 8bd97656 f57b1fb9
+  quit
+crypto ca certificate chain ASDM_TrustPoint10-1
+ certificate ca 083be056904246b1a1756ac95991c74a
+    308203af 30820297 a0030201 02021008 3be05690 4246b1a1 756ac959 91c74a30 
+    0d06092a 864886f7 0d010105 05003061 310b3009 06035504 06130255 53311530 
+    13060355 040a130c 44696769 43657274 20496e63 31193017 06035504 0b131077 
+    77772e64 69676963 6572742e 636f6d31 20301e06 03550403 13174469 67694365 
+    72742047 6c6f6261 6c20526f 6f742043 41301e17 0d303631 31313030 30303030 
+    305a170d 33313131 31303030 30303030 5a306131 0b300906 03550406 13025553 
+    31153013 06035504 0a130c44 69676943 65727420 496e6331 19301706 0355040b 
+    13107777 772e6469 67696365 72742e63 6f6d3120 301e0603 55040313 17446967 
+    69436572 7420476c 6f62616c 20526f6f 74204341 30820122 300d0609 2a864886 
+    f70d0101 01050003 82010f00 3082010a 02820101 00e23be1 1172dea8 a4d3a357 
+    aa50a28f 0b7790c9 a2a5ee12 ce965b01 0920cc01 93a74e30 b753f743 c4690057 
+    9de28d22 dd870640 008109ce ce1b83bf dfcd3b71 46e2d666 c705b376 27168f7b 
+    9e1e957d eeb748a3 08dad6af 7a0c3906 657f4a5d 1fbc17f8 abbeee28 d7747f7a 
+    78995985 686e5c23 324bbf4e c0e85a6d e370bf77 10bffc01 f685d9a8 44105832 
+    a97518d5 d1a2be47 e2276af4 9a33f849 08608bd4 5fb43a84 bfa1aa4a 4c7d3ecf 
+    4f5f6c76 5ea04b37 919edc22 e66dce14 1a8e6acb fecdb314 6417c75b 299e32bf 
+    f2eefad3 0b42d4ab b74132da 0cd4eff8 81d5bb8d 583fb51b e84928a2 70da3104 
+    ddf7b216 f24c0a4e 07a8ed4a 3d5eb57f a390c3af 27020301 0001a363 3061300e 
+    0603551d 0f0101ff 04040302 0186300f 0603551d 130101ff 04053003 0101ff30 
+    1d060355 1d0e0416 041403de 503556d1 4cbb66f0 a3e21b1b c397b23d d155301f 
+    0603551d 23041830 16801403 de503556 d14cbb66 f0a3e21b 1bc397b2 3dd15530 
+    0d06092a 864886f7 0d010105 05000382 010100cb 9c37aa48 13120afa dd449c4f 
+    52b0f4df ae04f579 7908a324 18fc4b2b 84c02db9 d5c7fef4 c11f58cb b86d9c7a 
+    74e79829 ab11b5e3 70a0a1cd 4c889993 8c9170e2 ab0f1cbe 93a9ff63 d5e40760 
+    d3a3bf9d 5b09f1d5 8ee353f4 8e63fa3f a7dbb466 df6266d6 d16e418d f22db5ea 
+    774a9f9d 58e22b59 c04023ed 2d288245 3e795492 2698e080 48a837ef f0d67960 
+    16deace8 0ecd6eac 4417382f 49dae145 3e2ab936 53cf3a50 06f72ee8 c457496c 
+    612118d5 04ad783c 2c3a806b a7ebaf15 14e9d889 c1b9386c e2916c8a ff64b977 
+    255730c0 1b24a3e1 dce9df47 7cb5b424 080530ec 2dbd0bbf 45bf50b9 a9f3eb98 
+    0112adc8 88c69834 5f8d0a3c c6e9d595 956dde
+  quit
+crypto ikev2 policy 1
+ encryption aes-256
+ integrity sha
+ group 5 2
+ prf sha
+ lifetime seconds 86400
+crypto ikev2 policy 10
+ encryption aes-192
+ integrity sha
+ group 5 2
+ prf sha
+ lifetime seconds 86400
+crypto ikev2 policy 20
+ encryption aes
+ integrity sha
+ group 5 2
+ prf sha
+ lifetime seconds 86400
+crypto ikev2 policy 30
+ encryption 3des
+ integrity sha
+ group 5 2
+ prf sha
+ lifetime seconds 86400
+crypto ikev2 policy 40
+ encryption des
+ integrity sha
+ group 5 2
+ prf sha
+ lifetime seconds 86400
+crypto ikev2 remote-access trustpoint ASDM_TrustPoint7
+crypto ikev1 am-disable
+crypto ikev1 policy 20
+ authentication rsa-sig
+ encryption aes-256
+ hash sha
+ group 2
+ lifetime 86400
+crypto ikev1 policy 30
+ authentication pre-share
+ encryption aes-256
+ hash sha
+ group 2
+ lifetime 86400
+crypto ikev1 policy 50
+ authentication rsa-sig
+ encryption aes-192
+ hash sha
+ group 2
+ lifetime 86400
+crypto ikev1 policy 60
+ authentication pre-share
+ encryption aes-192
+ hash sha
+ group 2
+ lifetime 86400
+crypto ikev1 policy 80
+ authentication rsa-sig
+ encryption aes
+ hash sha
+ group 2
+ lifetime 86400
+crypto ikev1 policy 90
+ authentication pre-share
+ encryption aes
+ hash sha
+ group 2
+ lifetime 86400
+crypto ikev1 policy 110
+ authentication rsa-sig
+ encryption 3des
+ hash sha
+ group 2
+ lifetime 86400
+crypto ikev1 policy 120
+ authentication pre-share
+ encryption 3des
+ hash sha
+ group 2
+ lifetime 86400
+crypto ikev1 policy 140
+ authentication rsa-sig
+ encryption des
+ hash sha
+ group 2
+ lifetime 86400
+crypto ikev1 policy 150
+ authentication pre-share
+ encryption des
+ hash sha
+ group 2
+ lifetime 86400
+telnet timeout 5
+ssh scopy enable
+ssh stricthostkeycheck
+ssh 10.1.3.54 255.255.255.255 tranzdmz1
+ssh 172.18.15.0 255.255.255.0 tranzdmz1
+ssh 10.1.3.48 255.255.255.255 tranzdmz1
+ssh 10.122.11.66 255.255.255.255 tranzdmz1
+ssh 10.68.32.0 255.255.255.0 tranzdmz1
+ssh 10.80.32.0 255.255.255.0 tranzdmz1
+ssh 10.121.11.45 255.255.255.255 tranzdmz1
+ssh 10.121.11.250 255.255.255.255 tranzdmz1
+ssh 10.68.242.0 255.255.255.0 tranzdmz1
+ssh timeout 60
+ssh version 2
+ssh key-exchange group dh-group14-sha1
+console timeout 0
+threat-detection basic-threat
+threat-detection statistics host
+threat-detection statistics port
+threat-detection statistics protocol
+threat-detection statistics access-list
+no threat-detection statistics tcp-intercept
+ntp server 80.86.38.193 source outside
+ntp server 46.101.66.214 source outside
+ntp server 82.110.47.121 source outside
+ssl server-version tlsv1.2
+ssl client-version tlsv1.1
+ssl cipher default custom "AES128-SHA:AES256-SHA:DES-CBC3-SHA:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA"
+ssl cipher tlsv1 custom "AES128-SHA:AES256-SHA:DES-CBC3-SHA:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA"
+ssl cipher tlsv1.1 custom "DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA"
+ssl cipher tlsv1.2 custom " ECDHE-ECDSA-AES256-GCM-SHA384 :ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:HE-RSA-AES256-SHA256"
+ssl cipher dtlsv1 custom "AES128-SHA:AES256-SHA:DES-CBC3-SHA:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA"
+ssl dh-group group14
+ssl trust-point ASDM_TrustPoint10 tranzdmz1
+ssl trust-point ASDM_TrustPoint10 outside
+webvpn
+ enable outside
+ anyconnect image disk0:/anyconnect-win-4.5.00058-webdeploy-k9.pkg 1
+ anyconnect image disk0:/anyconnect-macos-4.5.00058-webdeploy-k9.pkg 2
+ anyconnect image disk0:/anyconnect-linux64-4.5.00058-webdeploy-k9.pkg 3
+ anyconnect profiles EuromoneyDefault disk0:/euromoneydefault.xml
+ anyconnect profiles MacUsers disk0:/macusers.xml
+ anyconnect profiles NoUpdate disk0:/noupdate.xml
+ anyconnect profiles factoryDefault disk0:/factorydefault.xml
+ anyconnect enable
+ tunnel-group-list enable
+ cache
+  disable
+ error-recovery disable
+group-policy NoAccess internal
+group-policy NoAccess attributes
+ wins-server none
+ dns-server none
+ vpn-simultaneous-logins 0
+ vpn-tunnel-protocol l2tp-ipsec 
+ default-domain value global.root
+ address-pools none
+ webvpn
+  anyconnect profiles value EuromoneyDefault type user
+group-policy DevOPs internal
+group-policy DevOPs attributes
+ wins-server none
+ dns-server value 10.121.10.12 10.121.10.13
+ vpn-simultaneous-logins 1
+ vpn-idle-timeout 60
+ vpn-session-timeout 1440
+ vpn-filter value DevOpsFilter
+ vpn-tunnel-protocol ssl-client 
+ group-lock value Tech-Services
+ split-tunnel-policy tunnelspecified
+ split-tunnel-network-list value TechServ
+ default-domain value global.root
+ split-tunnel-all-dns disable
+ address-pools value vpn-client-pool
+group-policy Tech-serv-policy internal
+group-policy Tech-serv-policy attributes
+ wins-server none
+ dns-server value 10.121.10.12 10.121.10.13
+ vpn-simultaneous-logins 1
+ vpn-idle-timeout 60
+ vpn-session-timeout 1440
+ vpn-filter value TechServ
+ vpn-tunnel-protocol ssl-client 
+ group-lock value Tech-Services
+ split-tunnel-policy tunnelspecified
+ split-tunnel-network-list value TechServ
+ default-domain value global.root
+ split-tunnel-all-dns disable
+ address-pools value vpn-client-pool
+group-policy 3rdParty-policy internal
+group-policy 3rdParty-policy attributes
+ wins-server none
+ dns-server value 10.121.10.12 10.121.10.13
+ vpn-simultaneous-logins 1
+ vpn-idle-timeout 60
+ vpn-session-timeout 1440
+ vpn-filter value Deny-All
+ vpn-tunnel-protocol ssl-client 
+ group-lock value 3rd-Party
+ split-tunnel-policy tunnelspecified
+ split-tunnel-network-list value TechServ
+ default-domain value global.root
+group-policy OntoText-policy internal
+group-policy OntoText-policy attributes
+ wins-server none
+ dns-server value 10.121.10.12 10.121.10.13
+ vpn-simultaneous-logins 1
+ vpn-idle-timeout 60
+ vpn-session-timeout 1440
+ vpn-filter value OntoTextFilter
+ vpn-tunnel-protocol ssl-client 
+ group-lock value Tech-Services
+ split-tunnel-policy tunnelspecified
+ split-tunnel-network-list value OntoTextTunnelled
+ default-domain value global.root
+ split-tunnel-all-dns disable
+ address-pools value vpn-client-pool
+group-policy DfltGrpPolicy attributes
+ vpn-simultaneous-logins 0
+ vpn-filter value Deny-All
+ vpn-tunnel-protocol ssl-client 
+ default-domain value global.root
+group-policy BasicDeveloper internal
+group-policy BasicDeveloper attributes
+ wins-server none
+ dns-server value 10.121.10.12 10.121.10.13
+ vpn-simultaneous-logins 1
+ vpn-idle-timeout 60
+ vpn-session-timeout 1440
+ vpn-filter value BasicDeveloperFilter
+ vpn-tunnel-protocol ssl-client 
+ group-lock value Tech-Services
+ split-tunnel-policy tunnelspecified
+ split-tunnel-network-list value TechServ
+ default-domain value global.root
+ split-tunnel-all-dns disable
+ address-pools value vpn-client-pool
+group-policy GP-BCA_Dev_VPN internal
+group-policy GP-BCA_Dev_VPN attributes
+ dns-server value 10.121.10.12 10.121.10.13
+ vpn-simultaneous-logins 2
+ vpn-idle-timeout 60
+ vpn-session-timeout 1440
+ vpn-filter value BCA_Dev_VPN_filter
+ vpn-tunnel-protocol ssl-client 
+ group-lock value Tech-Services
+ split-tunnel-policy tunnelspecified
+ split-tunnel-network-list value BCA_Split_Tunnel_List
+ default-domain value global.root
+ split-tunnel-all-dns disable
+ address-pools value vpn-client-pool
+group-policy GP-Basic_Dev_Min_VPN internal
+group-policy GP-Basic_Dev_Min_VPN attributes
+ dns-server value 10.121.10.12 10.121.10.13
+ vpn-simultaneous-logins 2
+ vpn-idle-timeout 60
+ vpn-session-timeout 1440
+ vpn-filter value Basic_Dev_Min_VPN_filter
+ vpn-tunnel-protocol ssl-client 
+ group-lock value Tech-Services
+ split-tunnel-policy tunnelspecified
+ split-tunnel-network-list value Basic_Dev_Min_VPN_filter
+ default-domain value global.root
+ split-tunnel-all-dns disable
+ address-pools value vpn-client-pool
+group-policy Stash internal
+group-policy Stash attributes
+ wins-server none
+ dns-server value 10.121.10.12 10.121.10.13
+ vpn-simultaneous-logins 1
+ vpn-idle-timeout 60
+ vpn-session-timeout 1440
+ vpn-filter value StashFilter
+ vpn-tunnel-protocol ssl-client 
+ group-lock value Tech-Services
+ split-tunnel-policy tunnelspecified
+ split-tunnel-network-list value TechServ
+ default-domain value global.root
+ split-tunnel-all-dns disable
+ address-pools value vpn-client-pool
+group-policy GP-BCA_RemoteContractors internal
+group-policy GP-BCA_RemoteContractors attributes
+ dns-server value 10.121.10.12 10.121.10.13
+ vpn-simultaneous-logins 2
+ vpn-filter value BCA-RemoteContractors
+ vpn-tunnel-protocol ssl-client 
+ group-lock value Tech-Services
+ split-tunnel-policy tunnelspecified
+ split-tunnel-network-list value vpn-clients-1
+ default-domain value global.root
+ split-tunnel-all-dns disable
+ address-pools value vpn-client-pool
+ webvpn
+  anyconnect mtu 1200
+group-policy MetalsDeveloper internal
+group-policy MetalsDeveloper attributes
+ wins-server none
+ dns-server value 10.121.10.12 10.121.10.13
+ vpn-simultaneous-logins 1
+ vpn-idle-timeout 60
+ vpn-session-timeout 1440
+ vpn-filter value MetalsDeveloperFilter
+ vpn-tunnel-protocol ssl-client 
+ group-lock value Tech-Services
+ split-tunnel-policy tunnelspecified
+ split-tunnel-network-list value TechServ
+ default-domain value global.root
+ split-tunnel-all-dns disable
+ address-pools value vpn-client-pool
+group-policy Legal-Grp-Pol internal
+group-policy Legal-Grp-Pol attributes
+ vpn-simultaneous-logins 1
+ vpn-idle-timeout 60
+ vpn-session-timeout 1440
+ vpn-filter value Deny-All
+ vpn-tunnel-protocol ssl-client 
+ group-lock value 3rd-Party
+ split-tunnel-policy tunnelspecified
+ split-tunnel-network-list value Legal-Grp-Split-Tunnel-Nets
+ split-tunnel-all-dns disable
+group-policy Offshoredev-policy internal
+group-policy Offshoredev-policy attributes
+ wins-server none
+ dns-server value 10.121.10.12 10.121.10.13
+ vpn-simultaneous-logins 1
+ vpn-idle-timeout 60
+ vpn-session-timeout 1440
+ vpn-filter value TechServ
+ vpn-tunnel-protocol ssl-client 
+ group-lock value Tech-Services
+ split-tunnel-policy tunnelspecified
+ split-tunnel-network-list value OffshoreDevTunnelled
+ default-domain value global.root
+ split-tunnel-all-dns disable
+ address-pools value vpn-client-pool
+group-policy LukeM_Test internal
+group-policy LukeM_Test attributes
+ wins-server none
+ dns-server value 10.121.10.12 10.121.10.13
+ vpn-simultaneous-logins 1
+ vpn-idle-timeout 60
+ vpn-session-timeout 1440
+ vpn-filter value LukeM_Test_Filter
+ vpn-tunnel-protocol ssl-client 
+ group-lock value Tech-Services
+ split-tunnel-policy tunnelspecified
+ split-tunnel-network-list value TechServ
+ default-domain value global.root
+ split-tunnel-all-dns disable
+ address-pools value vpn-client-pool
+group-policy Manila-Telephony-policy internal
+group-policy Manila-Telephony-policy attributes
+ wins-server none
+ dns-server none
+ vpn-simultaneous-logins 1
+ vpn-idle-timeout 60
+ vpn-session-timeout 1440
+ vpn-filter value Manila-Telephony-Access
+ vpn-tunnel-protocol ssl-client 
+ group-lock value Manila-Telephony
+ split-tunnel-policy tunnelspecified
+ split-tunnel-network-list value Manila-Telephony-Access
+ default-domain none
+ split-dns none
+ address-pools value vpn-client-pool
+group-policy MacUsers-policy internal
+group-policy MacUsers-policy attributes
+ wins-server none
+ dns-server value 10.121.10.12 10.121.10.13
+ vpn-simultaneous-logins 1
+ vpn-idle-timeout 60
+ vpn-session-timeout 1440
+ vpn-filter value MacUsersFilter
+ vpn-tunnel-protocol ssl-client 
+ group-lock value MacUsers
+ split-tunnel-policy tunnelspecified
+ split-tunnel-network-list value MacUsersTunnelled
+ default-domain value global.root
+ split-tunnel-all-dns disable
+ address-pools value vpn-client-pool
+ webvpn
+  anyconnect profiles value MacUsers type user
+group-policy Corporate_Policy internal
+group-policy Corporate_Policy attributes
+ dns-server value 10.121.10.12 10.121.10.13
+ vpn-simultaneous-logins 1
+ vpn-idle-timeout 60
+ vpn-session-timeout 1440
+ vpn-filter value CorpFilter
+ vpn-tunnel-protocol ssl-client 
+ group-lock value Corporate
+ split-tunnel-policy tunnelspecified
+ split-tunnel-network-list value TechServ
+ default-domain value global.root
+ split-tunnel-all-dns disable
+ address-pools value vpn-client-pool
+group-policy EII-Recovery-SD internal
+group-policy EII-Recovery-SD attributes
+ dns-server value 10.121.10.11 10.121.10.13
+ vpn-simultaneous-logins 1
+ vpn-idle-timeout 60
+ vpn-session-timeout 1440
+ vpn-filter value SD-Recovery
+ vpn-tunnel-protocol ssl-client 
+ group-lock value EII-Recovery-Tunnel
+ split-tunnel-policy tunnelspecified
+ split-tunnel-network-list value SD-Recovery_Policy
+ split-tunnel-all-dns disable
+ address-pools value vpn-client-pool-SD-Recovery
+group-policy Whitfordtech-EDEN-policy internal
+group-policy Whitfordtech-EDEN-policy attributes
+ wins-server none
+ dns-server value 10.121.10.12 10.121.10.13
+ vpn-simultaneous-logins 3
+ vpn-idle-timeout 60
+ vpn-session-timeout 1440
+ vpn-filter value WhitfordTechFilter
+ vpn-tunnel-protocol ssl-client 
+ group-lock value Tech-Services
+ split-tunnel-policy tunnelspecified
+ split-tunnel-network-list value WhitfordTech
+ default-domain none
+ split-tunnel-all-dns disable
+ address-pools value vpn-client-pool
+dynamic-access-policy-record DfltAccessPolicy
+password-policy minimum-length 6
+username ssmith password xvqVvmfjGpYzXaoe encrypted
+username ssmith attributes
+ vpn-group-policy 3rdParty-policy
+ vpn-filter value 3rd-Party-client1
+ vpn-tunnel-protocol ssl-client 
+ group-lock value 3rd-Party
+ service-type remote-access
+username mlewis nopassword
+username mlewis attributes
+ vpn-group-policy Tech-serv-policy
+ service-type remote-access
+username bafrifa password pZoQxDBpnGmqAb0. encrypted
+username bafrifa attributes
+ vpn-group-policy 3rdParty-policy
+ vpn-filter value 3rd-Party-client1
+ vpn-tunnel-protocol ssl-client 
+ group-lock value 3rd-Party
+ service-type remote-access
+username roliver password 5jCtF3l0VYjCo9nH encrypted
+username roliver attributes
+ vpn-group-policy Legal-Grp-Pol
+ vpn-filter value roliver-acl
+ vpn-tunnel-protocol ssl-client 
+ group-lock value 3rd-Party
+ service-type remote-access
+username NCMUser password rY3bkKtShU11n4Rr encrypted
+username NCMUser attributes
+ service-type nas-prompt
+username firewalladmin password $sha512$5000$ygk0HipHEG7oukWJUfrBrA==$8Wof5MjKUjFew/Quv9IJKw== pbkdf2 privilege 15
+tunnel-group DefaultRAGroup general-attributes
+ authentication-server-group LDAP_Corporate
+tunnel-group Tech-Services type remote-access
+tunnel-group Tech-Services general-attributes
+ address-pool vpn-client-pool
+ authentication-server-group AzureMFA
+ authorization-server-group LDAP_MS_Group
+ default-group-policy NoAccess
+ authorization-required
+tunnel-group Tech-Services webvpn-attributes
+ group-alias Tech-Services enable
+tunnel-group 3rd-Party type remote-access
+tunnel-group 3rd-Party general-attributes
+ address-pool vpn-client-pool-2
+ default-group-policy 3rdParty-policy
+tunnel-group 3rd-Party webvpn-attributes
+ group-alias 3rd-Party enable
+tunnel-group MacUsers type remote-access
+tunnel-group MacUsers general-attributes
+ address-pool vpn-client-pool
+ authentication-server-group LDAP_MacUsers
+ authorization-server-group LDAP_MacUsers
+ default-group-policy NoAccess
+ authorization-required
+ username-from-certificate UPN
+tunnel-group MacUsers webvpn-attributes
+ authentication certificate
+ group-alias Mac enable
+ group-url https://vpn.euromoneyplc.com/Mac enable
+ without-csd
+tunnel-group Manila-Telephony type remote-access
+tunnel-group Manila-Telephony general-attributes
+ address-pool vpn-client-pool
+ authentication-server-group LDAP-Manila
+ authorization-server-group LDAP-Manila
+ default-group-policy NoAccess
+ authorization-required
+tunnel-group Manila-Telephony webvpn-attributes
+ group-alias Manila-Telephony enable
+tunnel-group Corporate type remote-access
+tunnel-group Corporate general-attributes
+ address-pool vpn-client-pool
+ authentication-server-group LDAP_Corporate
+ authorization-server-group LDAP_Corporate
+ default-group-policy NoAccess
+ username-from-certificate UPN
+ secondary-username-from-certificate UPN
+tunnel-group Corporate webvpn-attributes
+ authentication aaa certificate
+ pre-fill-username client
+ group-alias Corporate enable
+tunnel-group EII-Recovery-Tunnel type remote-access
+tunnel-group EII-Recovery-Tunnel general-attributes
+ address-pool vpn-client-pool-SD-Recovery
+ authentication-server-group AzureMFA
+ authorization-server-group LDAP_SDRecovery
+ default-group-policy NoAccess
+ authorization-required
+tunnel-group EII-Recovery-Tunnel webvpn-attributes
+ group-alias EII-Recovery-SD enable
+!
+class-map inspection_default
+ match default-inspection-traffic
+!
+!
+policy-map type inspect dns preset_dns_map
+ parameters
+  message-length maximum client auto
+  message-length maximum 512
+  no tcp-inspection
+policy-map global_policy
+ class inspection_default
+  inspect dns preset_dns_map 
+  inspect ftp 
+  inspect h323 h225 
+  inspect h323 ras 
+  inspect rsh 
+  inspect rtsp 
+  inspect esmtp 
+  inspect sqlnet 
+  inspect skinny  
+  inspect sunrpc 
+  inspect xdmcp 
+  inspect netbios 
+  inspect tftp 
+  inspect ip-options 
+  inspect icmp 
+!
+service-policy global_policy global
+smtp-server 10.1.6.47
+prompt hostname context state priority 
+no call-home reporting anonymous
+Cryptochecksum:7f6cf3ca1b0a0622c6f8298876c0506a
+: end
+
